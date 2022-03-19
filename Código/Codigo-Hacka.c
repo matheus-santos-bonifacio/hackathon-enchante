@@ -34,6 +34,7 @@ typedef struct amigos{
     //Fazer como Lista Duplamente Encadeada;
     int quantidade;
     ptAmigos *primeiro;
+    ptAmigos *fim;
 
 } Amigos;
 
@@ -277,6 +278,52 @@ int LoginUser(FILE* Arq_Lg, FILE* Arq_Pw){
     
 }
 
+//------> Funções relacionadas à LDE da Lista de Amigos;
+
+Amigos* InicializaLAmigos(void){
+
+    return NULL;
+}
+
+Amigos* InsereLAmigos(Amigos* ListaAmigos, ptAmigos Infos, Player NOT_Jogador){
+
+    ptAmigos Novo;
+    ptAmigos ptAux = ListaAmigos;
+    ptAmigos* ptAnt = NULL;
+
+    Novo = (ptAmigos*)malloc(sizeof(ptAmigos*));
+    Infos->info = NOT_Jogador;
+
+    Novo->info = Infos->info;
+    
+    //Sempre inserir no começo para dar prioridade aos novos amigos.
+
+    if (ListaAmigos == NULL){
+
+        ListaAmigos->primeiro = Novo;
+        ListaAmigos->fim = ptAux;
+        Novo->prox = ptAux;
+        Novo->ant = NULL;
+        ptAux->prox = NULL;
+        ptAux->ant = Novo;
+
+    }
+    else {
+        while(ptAux->prox != NULL);
+        {
+        ListaAmigos->primeiro = Novo;
+        Novo->prox = ptAux;
+        Novo->ant = NULL;
+        ptAux = ptAux->prox;
+        ptAux->prox = ptAux->prox;
+        ptAux->ant = ptAux;
+        }
+    }
+
+    return ListaAmigos;
+
+}
+
 void CarregaArqSala(int SALA, Cenario* Sala[][800]){
 
     FILE* arq;
@@ -309,8 +356,6 @@ void CarregaArqSala(int SALA, Cenario* Sala[][800]){
     //Fazer função de impressão visual da Sala.
 
 }
-
-//Implementar LDE da lista de Amigos;
 
 //FUNÇÕES IN-GAME
 
