@@ -8,6 +8,7 @@ C H E C K L I S T - Código Hackathon Enchante{é}
 -Inserir lógica de servidor no jogo.
 -Lógica do jogo em si.
 -Inserir redes sociais.
+-Sistema de pontos/níveis?
 
 //SALAS!
 -Seção de chat/fóruns.
