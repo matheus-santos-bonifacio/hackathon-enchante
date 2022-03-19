@@ -49,7 +49,7 @@ typedef struct player{
 
 } Player; //Informações provavelmente serão carregadas por meio de um arquivo texto durante o login.
 
-//FUNÇÕES
+//FUNÇÕES PRÉ-JOGO
 
 void CadastroLinguas(Player* Jogador){
 
@@ -245,6 +245,8 @@ int LoginUser(FILE* Arq_Lg, FILE* Arq_Pw){
     
 }
 
+//FUNÇÕES IN-GAME
+
 //SALAS
 
 int main (){
@@ -257,8 +259,8 @@ int main (){
 
     initWindow(screenWidth, screenHeight, "Hackathon Enchante{é}");
     
-    //ABAIXO: Tudo o que aparecerá na tela. A lógica do jogo em si deve estar estruturada acima!
-    //Fazer em função para ficar mais organizado.
+    //ACIMA: Toda a lógica do jogo e arquivos.
+    //ABAIXO: Tudo o que aparecerá na tela/UX Design estruturado para a biblioteca. 
 
     initDrawing();
     endDrawing();
