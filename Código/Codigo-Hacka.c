@@ -2,28 +2,35 @@
 #include <stdlib.h>
 #include <raylib.h>
 
-struct Player{
+typedef struct player{
 
-    //PersonalizÃ¡veis: nome, idade, aparÃªncia, gostos...
-    char[20] Nome;
+    //Personalizáveis: nome, idade, aparência, gostos...
+    char Nome[20];
     int idade;
-    //Ideias: lÃ­nguas faladas pelo jogador
+    //Ideias: línguas faladas pelo jogador
 
-    //CaracterÃ­sticas inerentes a ele
-    int Atravessavel = 0;
-    
+    //Características inerentes a ele
+    int Atravessavel;
+    int Amigos;
+    int Nível;
 
-}
+} Player;
 
+typedef struct amigos{}
 
 int main (){
 
     int screenWidth = 1000;
     int screenHeight = 800;
+    Player Jogador;
 
-    initWindow(screenWidth, screenHeight, "Hackathon Enchante{Ã©}");
+    Jogador.Atravessavel = 0;
+    Jogador.Amigos = 0;
+    Jogador.Nível = 0;
+
+    initWindow(screenWidth, screenHeight, "Hackathon Enchante{é}");
     
-    //ABAIXO: Tudo o que aparecerÃ¡ na tela. A lÃ³gica do jogo em si deve estar estruturada acima!
+    //ABAIXO: Tudo o que aparecerá na tela. A lógica do jogo em si deve estar estruturada acima!
 
     initDrawing();
     endDrawing();
