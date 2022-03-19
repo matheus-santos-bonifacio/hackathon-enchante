@@ -7,6 +7,7 @@
 
 #define SCREEN_WIDTH 1000
 #define SCREEN_HEIGHT 800
+#define MAX_INPUT_CHARS 140
 
 typedef struct linguas{
 
@@ -50,7 +51,7 @@ typedef struct player{
     //Características inerentes a ele
     int Atravessavel;
     Amigos ListaAmigos;
-    int Nivel;
+    int Nivel; //Gamificação!
     int AlunoAF;
 
 } Player; //Informações provavelmente serão carregadas por meio de um arquivo texto durante o login.
@@ -348,6 +349,8 @@ Amigos* RemoveLista(Amigos* ListaAmigos, ptAmigos Infos){
 
     PtProx = PtAux->prox;
 
+    //Quando a pessoa clica em remover uma determinada pessoa de sua lista de amigos.
+
     printf("Deseja mesmo remover esta pessoa da sua lista de amigos?\n");
     printf("1 - Sim || 0 - Não");
     scanf("%d", &elemento);
@@ -371,8 +374,6 @@ Amigos* RemoveLista(Amigos* ListaAmigos, ptAmigos Infos){
 
     return ListaAmigos;
 }
-
-
 
 
 void CarregaArqSala(int SALA, Cenario* Sala[][800]){
@@ -521,6 +522,44 @@ void JogadorMovimenta(Player Jogador, Cenario* Sala[][800]){
     //Implementar a versão com sprites quando ficarem prontas!
 
 }
+
+const char* SpeechBubble(){
+
+    //Função deve ser inserida dentro do looping do game.
+    char Texto[140];
+    int QuantLetras = 0;
+    bool envia;
+    
+    int key = GetCharPressed();
+    
+    Rectangle SBubble = { SCREEN_WIDTH/2.0f - 100, 180, 225, 50 }; 
+    //--> Calcular valores corretos com base na distribuição da tela, isso é só demo;
+
+    while (key > 0 && envia == false){
+
+                if ((key >= 32) && (key <= 125) && (QuantLetras < MAX_INPUT_CHARS)){
+                    Texto[QuantLetras] = (char)key;
+                    Texto[QuantLetras+1] = '\0';
+                    QuantLetras++;
+                }
+
+                key = GetCharPressed(); //Pega a próxima.
+
+                if (IsKeyPressed(KEY_BACKSPACE)){ //Deleta;
+                QuantLetras--;
+                if (QuantLetras < 0) QuantLetras = 0;
+                Texto[QuantLetras] = '\0';
+                }
+
+                if (IsKeyPressed(KEY_ENTER)){ //Envia;
+                    envia = true;
+                    return Texto;
+                }
+            }
+}
+
+
+
 
 int main (){
 
