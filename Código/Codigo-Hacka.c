@@ -2,7 +2,11 @@
 #include <stdlib.h>
 #include <locale.h>
 #include <string.h>
+#include <ctype.h>
 #include <raylib.h>
+
+#define SCREEN_WIDTH 1000
+#define SCREEN_HEIGHT 800
 
 typedef struct linguas{
 
@@ -40,6 +44,7 @@ typedef struct player{
     int Idade;
     Linguas Linguagens;
     char Bio[300];
+    Posicao PosicaoPlayer;
 
     //Características inerentes a ele
     int Atravessavel;
@@ -48,6 +53,30 @@ typedef struct player{
     int AlunoAF;
 
 } Player; //Informações provavelmente serão carregadas por meio de um arquivo texto durante o login.
+
+typedef struct posicao_player{
+
+    int PosX;
+    int PosY;
+
+} Posicao;
+
+typedef struct local{
+    /*---> O cenário que aparecerá na tela deverá ser gerado baseado em um arquivo.txt específico de cada região.
+    Entretanto, é preciso ler a matriz do arquivo.txt de sala (um mapa de caracteres) e analisar
+    caracter por caracter para conseguir limitar e analisar as interações dos personagens com a
+    sala. Isso será implementado por meio de uma função de análise de matriz. 
+    
+    Logo, essas infos serão preenchidas pela função de análise da sala baseado nas no arquivo.txt*/
+    Posicao PosicaoCenario;
+    int Atravessavel;
+    int TipoInteracao;
+    //---> Interações de 0-4, sendo respectivamente: nenhuma, sentar, pegar, conversar, interagir (obj. inanimado);
+    //OBS: 0 - Atravessa; 1- Atravessa, mas visor da tela é diferente; 2- Não atravessa; 3 - Não atravessa; 4 - Não atravessa;
+    int isDoor;
+    //--->Se for uma "porta" em um dos quatro cantos da tela para outra sala, há uma interação especial.
+
+} Cenario;
 
 //FUNÇÕES PRÉ-JOGO
 
@@ -113,7 +142,7 @@ int PersonalizaPlayer(Player* Jogador){
         scanf("%d", &Jogador->Idade);
 
         printf("Línguas estrangeiras\n");
-        CadastroLinguas(&Jogador);
+        CadastroLinguas(Jogador);
 
         printf("Conte um pouco sobre você! Insira uma bio.\n");
         //Opcional;
@@ -123,6 +152,8 @@ int PersonalizaPlayer(Player* Jogador){
         Jogador->ListaAmigos.primeiro = NULL;
         Jogador->Nivel = 0;
         Jogador->Atravessavel = 0;
+        Jogador->PosicaoPlayer.PosX = SCREEN_WIDTH/2;
+        Jogador->PosicaoPlayer.PosY = SCREEN_HEIGHT/2;
 
         //Se for aluno da AF, isso deverá ser puxado com base no arquivo.txt do cadastro.
 
@@ -167,7 +198,7 @@ int CadastroUser(){
                 u++;
             if ( isdigit(Senha[i]) )
                 d++;
-            if ( issymbol(Senha[i]) )   // Checks if password[i] is a symbol
+            if ( ispunct(Senha[i]) ) 
                 s++;        
             if ( (u + d + s) >= 3) {
                 printf("Sua senha é forte!\n");
@@ -189,7 +220,7 @@ int CadastroUser(){
     }
     else {
         NewInfo_Senha = fopen("INFO_Pw.txt", "a+");
-        sucesso = fprint(NewInfo_Senha, "%s\n", Senha);
+        sucesso = fprintf(NewInfo_Senha, "%s\n", Senha);
         if (sucesso < 0){
             printf("Algo deu errado, falha no cadastro!\n");
             fclose(NewInfo_Senha);
@@ -219,7 +250,7 @@ int LoginUser(FILE* Arq_Lg, FILE* Arq_Pw){
 
     Arq_Lg = fopen("INFO_Login.txt", "r");
 
-    while(!eof(Arq_Lg) && Encontrado == 0){
+    while(!feof(Arq_Lg) && Encontrado == 0){
         fscanf(Arq_Lg, "%s", &Correspondente);
         n++;
         if (!strcmp(Correspondente, Login)){
@@ -245,25 +276,146 @@ int LoginUser(FILE* Arq_Lg, FILE* Arq_Pw){
     
 }
 
+void CarregaSALA(){
+
+    FILE* arq;
+
+
+}
+
+//Implementar LDE da lista de Amigos;
+
 //FUNÇÕES IN-GAME
+
+void JogadorMovimenta(Player Jogador, Cenario* Sala[][800]){
+
+    int Prox_Mov_X, Prox_Mov_Y;
+    bool movimento;
+
+    if (IsKeyPressed(KEY_UP) || IsKeyPressed(KEY_W)){
+
+        Prox_Mov_X = Jogador.PosicaoPlayer.PosX;
+        Prox_Mov_Y = Jogador.PosicaoPlayer.PosY + 1;
+
+        //Análises das propriedades de Sala[Prox_Mov_X][Prox_Mov_Y]
+
+        //Caso 1: "Vazio na frente"
+        if (Sala[Prox_Mov_X][Prox_Mov_Y]->Atravessavel == 1 && Sala[Prox_Mov_X][Prox_Mov_Y]->TipoInteracao == 0)
+            movimento = true;
+        //Caso 2: "Sentar"
+        else if (Sala[Prox_Mov_X][Prox_Mov_Y]->TipoInteracao == 1)
+            movimento = true;
+        //Caso 3: Pegar, Interagir ou Parede/Canto da tela;
+        else if (Sala[Prox_Mov_X][Prox_Mov_Y]->TipoInteracao == 2 || Sala[Prox_Mov_X][Prox_Mov_Y]->TipoInteracao == 3 || Sala[Prox_Mov_X][Prox_Mov_Y]->TipoInteracao == 4 )
+            movimento = false;
+        
+        if (movimento == true)
+            Jogador.PosicaoPlayer.PosY++;
+        
+        //Caso 4: O jogador está no canto da tela em uma porta para uma nova Sala.
+
+        if (Sala[Prox_Mov_X][Prox_Mov_Y]->isDoor == 1);
+            //Função Door;
+    }
+    if (IsKeyPressed(KEY_DOWN) || IsKeyPressed(KEY_S)){
+
+        Prox_Mov_X = Jogador.PosicaoPlayer.PosX;
+        Prox_Mov_Y = Jogador.PosicaoPlayer.PosY - 1;
+
+        //Análises das propriedades de Sala[Prox_Mov_X][Prox_Mov_Y]
+
+        //Caso 1: "Vazio na frente"
+        if (Sala[Prox_Mov_X][Prox_Mov_Y]->Atravessavel == 1 && Sala[Prox_Mov_X][Prox_Mov_Y]->TipoInteracao == 0)
+            movimento = true;
+        //Caso 2: "Sentar"
+        else if (Sala[Prox_Mov_X][Prox_Mov_Y]->TipoInteracao == 1)
+            movimento = true;
+        //Caso 3: Pegar, Interagir ou Parede/Canto da tela;
+        else if (Sala[Prox_Mov_X][Prox_Mov_Y]->TipoInteracao == 2 || Sala[Prox_Mov_X][Prox_Mov_Y]->TipoInteracao == 3 || Sala[Prox_Mov_X][Prox_Mov_Y]->TipoInteracao == 4 )
+            movimento = false;
+        
+        if (movimento == true)
+            Jogador.PosicaoPlayer.PosY--;
+        
+        //Caso 4: O jogador está no canto da tela em uma porta para uma nova Sala.
+
+        if (Sala[Prox_Mov_X][Prox_Mov_Y]->isDoor == 1);
+            //Função Door;
+    }
+
+    if (IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_S)){
+
+        Prox_Mov_X = Jogador.PosicaoPlayer.PosX + 1;
+        Prox_Mov_Y = Jogador.PosicaoPlayer.PosY;
+
+        //Análises das propriedades de Sala[Prox_Mov_X][Prox_Mov_Y]
+
+        //Caso 1: "Vazio na frente"
+        if (Sala[Prox_Mov_X][Prox_Mov_Y]->Atravessavel == 1 && Sala[Prox_Mov_X][Prox_Mov_Y]->TipoInteracao == 0)
+            movimento = true;
+        //Caso 2: "Sentar"
+        else if (Sala[Prox_Mov_X][Prox_Mov_Y]->TipoInteracao == 1)
+            movimento = true;
+        //Caso 3: Pegar, Interagir ou Parede/Canto da tela;
+        else if (Sala[Prox_Mov_X][Prox_Mov_Y]->TipoInteracao == 2 || Sala[Prox_Mov_X][Prox_Mov_Y]->TipoInteracao == 3 || Sala[Prox_Mov_X][Prox_Mov_Y]->TipoInteracao == 4 )
+            movimento = false;
+        
+        if (movimento == true)
+            Jogador.PosicaoPlayer.PosX++;
+        
+        //Caso 4: O jogador está no canto da tela em uma porta para uma nova Sala.
+
+        if (Sala[Prox_Mov_X][Prox_Mov_Y]->isDoor == 1);
+            //Função Door;
+    }
+
+    if (IsKeyPressed(KEY_LEFT) || IsKeyPressed(KEY_A)){
+
+        Prox_Mov_X = Jogador.PosicaoPlayer.PosX - 1;
+        Prox_Mov_Y = Jogador.PosicaoPlayer.PosY;
+
+        //Análises das propriedades de Sala[Prox_Mov_X][Prox_Mov_Y]
+
+        //Caso 1: "Vazio na frente"
+        if (Sala[Prox_Mov_X][Prox_Mov_Y]->Atravessavel == 1 && Sala[Prox_Mov_X][Prox_Mov_Y]->TipoInteracao == 0)
+            movimento = true;
+        //Caso 2: "Sentar"
+        else if (Sala[Prox_Mov_X][Prox_Mov_Y]->TipoInteracao == 1)
+            movimento = true;
+        //Caso 3: Pegar, Interagir ou Parede/Canto da tela;
+        else if (Sala[Prox_Mov_X][Prox_Mov_Y]->TipoInteracao == 2 || Sala[Prox_Mov_X][Prox_Mov_Y]->TipoInteracao == 3 || Sala[Prox_Mov_X][Prox_Mov_Y]->TipoInteracao == 4 )
+            movimento = false;
+        
+        if (movimento == true)
+            Jogador.PosicaoPlayer.PosX - 1;
+        
+        //Caso 4: O jogador está no canto da tela em uma porta para uma nova Sala.
+
+        if (Sala[Prox_Mov_X][Prox_Mov_Y]->isDoor == 1);
+            //Função Door;
+    }
+
+    //Implementar a versão com sprites quando ficarem prontas!
+
+}
 
 //SALAS
 
 int main (){
 
-    int screenWidth = 1000;
-    int screenHeight = 800;
     Player Jogador;
+    Cenario Sala[1000][800]; //-->Por ora, tem que analisar a divisão correta da tela 
+    //                          (aka se vai ter uma sessão da tela só para chat e etc.);
 
     setlocale(LC_ALL, "Portuguese");
 
-    initWindow(screenWidth, screenHeight, "Hackathon Enchante{é}");
+    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Hackathon Enchante{é} - Demo do Time 3");
     
     //ACIMA: Toda a lógica do jogo e arquivos.
     //ABAIXO: Tudo o que aparecerá na tela/UX Design estruturado para a biblioteca. 
 
-    initDrawing();
-    endDrawing();
+    BeginDrawing();
+    EndDrawing();
 
     return 0;
 }
