@@ -1,0 +1,21 @@
+
+C H E C K L I S T - Código Hackathon Enchante{é}
+
+
+//BÁSICOS
+-Menu de login.
+-Struct para definir o jogador.
+-Inserir lógica de servidor no jogo.
+-Lógica do jogo em si.
+-Inserir redes sociais.
+
+//SALAS!
+-Seção de chat/fóruns.
+-Filmes fracófonos.
+-Quizzes dentro de um filme francófono.
+-Música.
+-Seção de cultura.
+
+//DESIGN
+-Parte estética (o que aparece na tela) --> ver com Fabiano.
+-UX Design.
