@@ -15,10 +15,7 @@
 #define ALTURA_PIXEL 44
 
 typedef struct linguas{
-
-    //Aqui o jogador pode definir se ele prefere que o jogo apareça em FR ou em PT.    
-    int Preferencia_PTouFR;
-
+    
     //Aqui o jogador pode definir se ele é proficiente em outras línguas, de bás-int-avç definindo um valor de 0-2.
     int ProficienciaPT;
     int ProficienciaFR;        
@@ -519,67 +516,69 @@ void JogadorMovimenta(Player Jogador, Cenario* Sala[][800], int CurrentScreen){
             }
         }
 
-        //CASO 1: Jogador vai para X >= atual e Y >= atual;
-        if (Jogador.PosicaoPlayer.PosX >= Sala[i][j]->PosicaoCenario.PosX &&
-        Jogador.PosicaoPlayer.PosY >= Sala[i][j]->PosicaoCenario.PosY){
-            for (int m = Jogador.PosicaoPlayer.PosX; m == Sala[i][j]->PosicaoCenario.PosX; m++){
-                if (Sala[m][Jogador.PosicaoPlayer.PosY]->Atravessavel == 1){
-                    Jogador.PosicaoPlayer.PosX++;
-                    for (int n = Jogador.PosicaoPlayer.PosY; n == Sala[i][j]->PosicaoCenario.PosY; n++){
-                        if (Sala[m][n]->Atravessavel == 1)
-                        Jogador.PosicaoPlayer.PosY++;
-                    }
-                }
-            }
-        }
-        //CASO 2: Jogador vai para X >= atual e Y < atual;
-        else if (Jogador.PosicaoPlayer.PosX >= Sala[i][j]->PosicaoCenario.PosX &&
-        Jogador.PosicaoPlayer.PosY < Sala[i][j]->PosicaoCenario.PosY){
-            for (int m = Jogador.PosicaoPlayer.PosX; m == Sala[i][j]->PosicaoCenario.PosX; m++){
-                if (Sala[m][Jogador.PosicaoPlayer.PosY]->Atravessavel == 1){
-                    Jogador.PosicaoPlayer.PosX++;
-                    for (int n = Jogador.PosicaoPlayer.PosY; n == Sala[i][j]->PosicaoCenario.PosY; n--){
-                        if (Sala[m][n]->Atravessavel == 1)
-                        Jogador.PosicaoPlayer.PosY--;
-                    }
-                }
-            }
-        }
-        //CASO 3: Jogador vai para X < atual e Y >= atual;
-        else if (Jogador.PosicaoPlayer.PosX < Sala[i][j]->PosicaoCenario.PosX &&
-        Jogador.PosicaoPlayer.PosY >= Sala[i][j]->PosicaoCenario.PosY){
-            for (int m = Jogador.PosicaoPlayer.PosX; m == Sala[i][j]->PosicaoCenario.PosX; m--){
-                if (Sala[m][Jogador.PosicaoPlayer.PosY]->Atravessavel == 1){
-                    Jogador.PosicaoPlayer.PosX--;
-                    for (int n = Jogador.PosicaoPlayer.PosY; n == Sala[i][j]->PosicaoCenario.PosY; n++){
-                        if (Sala[m][n]->Atravessavel == 1)
-                        Jogador.PosicaoPlayer.PosY++;
-                    }
-                }
-            }
-        }
-        //CASO 4: Jogador vai para X < atual e Y < atual;
+    if (Sala[i][j]->isDoor == 0){
 
-        else if (Jogador.PosicaoPlayer.PosX < Sala[i][j]->PosicaoCenario.PosX &&
-        Jogador.PosicaoPlayer.PosY < Sala[i][j]->PosicaoCenario.PosY){
-            for (int m = Jogador.PosicaoPlayer.PosX; m == Sala[i][j]->PosicaoCenario.PosX; m--){
-                if (Sala[m][Jogador.PosicaoPlayer.PosY]->Atravessavel == 1){
-                    Jogador.PosicaoPlayer.PosX--;
-                    for (int n = Jogador.PosicaoPlayer.PosY; n == Sala[i][j]->PosicaoCenario.PosY; n--){
-                        if (Sala[m][n]->Atravessavel == 1)
-                        Jogador.PosicaoPlayer.PosY--;
+            //CASO 1: Jogador vai para X >= atual e Y >= atual;
+            if (Jogador.PosicaoPlayer.PosX >= Sala[i][j]->PosicaoCenario.PosX &&
+            Jogador.PosicaoPlayer.PosY >= Sala[i][j]->PosicaoCenario.PosY){
+                for (int m = Jogador.PosicaoPlayer.PosX; m == Sala[i][j]->PosicaoCenario.PosX; m++){
+                    if (Sala[m][Jogador.PosicaoPlayer.PosY]->Atravessavel == 1){
+                        Jogador.PosicaoPlayer.PosX++;
+                        for (int n = Jogador.PosicaoPlayer.PosY; n == Sala[i][j]->PosicaoCenario.PosY; n++){
+                            if (Sala[m][n]->Atravessavel == 1)
+                            Jogador.PosicaoPlayer.PosY++;
+                        }
+                    }
+                }
+            }
+            //CASO 2: Jogador vai para X >= atual e Y < atual;
+            else if (Jogador.PosicaoPlayer.PosX >= Sala[i][j]->PosicaoCenario.PosX &&
+            Jogador.PosicaoPlayer.PosY < Sala[i][j]->PosicaoCenario.PosY){
+                for (int m = Jogador.PosicaoPlayer.PosX; m == Sala[i][j]->PosicaoCenario.PosX; m++){
+                    if (Sala[m][Jogador.PosicaoPlayer.PosY]->Atravessavel == 1){
+                        Jogador.PosicaoPlayer.PosX++;
+                        for (int n = Jogador.PosicaoPlayer.PosY; n == Sala[i][j]->PosicaoCenario.PosY; n--){
+                            if (Sala[m][n]->Atravessavel == 1)
+                            Jogador.PosicaoPlayer.PosY--;
+                        }
+                    }
+                }
+            }
+            //CASO 3: Jogador vai para X < atual e Y >= atual;
+            else if (Jogador.PosicaoPlayer.PosX < Sala[i][j]->PosicaoCenario.PosX &&
+            Jogador.PosicaoPlayer.PosY >= Sala[i][j]->PosicaoCenario.PosY){
+                for (int m = Jogador.PosicaoPlayer.PosX; m == Sala[i][j]->PosicaoCenario.PosX; m--){
+                    if (Sala[m][Jogador.PosicaoPlayer.PosY]->Atravessavel == 1){
+                        Jogador.PosicaoPlayer.PosX--;
+                        for (int n = Jogador.PosicaoPlayer.PosY; n == Sala[i][j]->PosicaoCenario.PosY; n++){
+                            if (Sala[m][n]->Atravessavel == 1)
+                            Jogador.PosicaoPlayer.PosY++;
+                        }
+                    }
+                }
+            }
+            //CASO 4: Jogador vai para X < atual e Y < atual;
+
+            else if (Jogador.PosicaoPlayer.PosX < Sala[i][j]->PosicaoCenario.PosX &&
+            Jogador.PosicaoPlayer.PosY < Sala[i][j]->PosicaoCenario.PosY){
+                for (int m = Jogador.PosicaoPlayer.PosX; m == Sala[i][j]->PosicaoCenario.PosX; m--){
+                    if (Sala[m][Jogador.PosicaoPlayer.PosY]->Atravessavel == 1){
+                        Jogador.PosicaoPlayer.PosX--;
+                        for (int n = Jogador.PosicaoPlayer.PosY; n == Sala[i][j]->PosicaoCenario.PosY; n--){
+                            if (Sala[m][n]->Atravessavel == 1)
+                            Jogador.PosicaoPlayer.PosY--;
+                        }
                     }
                 }
             }
         }
-    
+        else {
+            Door(&Jogador, CurrentScreen, Mouse, Sala);
+        }
+        
     //IMPLEMENTAR A SPRITE DO PERSONAGEM!
 
     }
-
-
-
-
 
 }
 
@@ -628,16 +627,19 @@ void DrawSpeechBubble(char Texto[], Player* Jogador){
 
 }
 
-void Door(Player* Jogador, int CurrentScreen, int Prox_Mov_X, int Prox_Mov_Y, Cenario Sala[][800]){
+void Door(Player* Jogador, int CurrentScreen, Vector2 Mouse, Cenario Sala[][800]){
 
-    CurrentScreen = Sala[Prox_Mov_X][Prox_Mov_Y].DoorTrue_ProxSala;
+    int x = (int)Mouse.x;
+    int y = (int)Mouse.y;
+
+    CurrentScreen = Sala[x][y].DoorTrue_ProxSala;
 
     CarregaArqSala(CurrentScreen, &Sala);
 
     //LoadNovaTela;
 
-    Jogador->PosicaoPlayer.PosX = Sala[Prox_Mov_X][Prox_Mov_Y].PosicaoCenario.PosX;
-    Jogador->PosicaoPlayer.PosY = Sala[Prox_Mov_X][Prox_Mov_Y].PosicaoCenario.PosY;
+    Jogador->PosicaoPlayer.PosX = Sala[x][y].PosicaoCenario.PosX;
+    Jogador->PosicaoPlayer.PosY = Sala[x][y].PosicaoCenario.PosY;
 
 }
 
