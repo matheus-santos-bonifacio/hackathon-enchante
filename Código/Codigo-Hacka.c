@@ -308,21 +308,70 @@ Amigos* AcionarAmigos(Amigos* ListaAmigos, ptAmigos Infos, Player NOT_Jogador){
         ptAux->ant = Novo;
 
     }
-    else {
-        while(ptAux->prox != NULL);
-        {
+    else {        
         ListaAmigos->primeiro = Novo;
         Novo->prox = ptAux;
         Novo->ant = NULL;
-        ptAux = ptAux->prox;
-        ptAux->prox = ptAux->prox;
+        while(ptAux->prox != NULL);{
         ptAux->ant = ptAux;
+        ptAux = ptAux->prox;
+        ptAux->prox = ptAux->prox->prox;
         }
     }
 
     return ListaAmigos;
 
 }
+
+void ImprimeLista(Amigos* ListaAmigos){
+
+    ptAmigos PtAux = ListaAmigos;
+    
+    if (ListaAmigos == NULL)
+        printf("Nenhum amigo ainda! Adicione alguns!\n");
+    else{
+        do {
+            printf("Nome = %s\n, Idade = %d\n",
+            PtAux->info.Nome,
+            PtAux->info.Idade);
+            PtAux = PtAux->prox;
+        } 
+        while (PtAux != NULL);
+    }
+}
+
+Amigos* RemoveLista(Amigos* ListaAmigos, ptAmigos Infos){
+
+    ptAmigos PtAux;
+    ptAmigos PtProx;
+    int elemento;
+
+    PtProx = PtAux->prox;
+
+    printf("Deseja mesmo remover esta pessoa da sua lista de amigos?\n");
+    printf("1 - Sim || 0 - Não");
+    scanf("%d", &elemento);
+
+    if (elemento == 1){
+
+        if (ListaAmigos == NULL)
+            return NULL;
+        else {
+
+            for (PtAux = ListaAmigos; (PtAux->prox = NULL); PtAux = PtProx){
+                for (PtAux; PtAux->prox = NULL; PtAux = PtProx){
+                        free(PtAux);
+                        PtAux = PtProx;
+                    }
+                    break;
+                }
+            }
+
+        }
+
+    return ListaAmigos;
+}
+
 
 
 
