@@ -28,14 +28,20 @@ typedef struct linguas{
 
 } Linguas;
 
-typedef struct amigos{
-    //Fazer como Lista Duplamente Encadeada.
-    //Inicializar função só para isso.
+struct ponteiros{
 
+    Player info;
+    struct ponteiros *prox;
+    struct ponteiros *ant;
+
+};
+
+typedef struct ponteiros *ptAmigos;
+
+typedef struct amigos{
+    //Fazer como Lista Duplamente Encadeada;
     int quantidade;
-    Amigos* primeiro;
-    Amigos* prox;
-    Amigos* ant;
+    ptAmigos *primeiro;
 
 } Amigos;
 
@@ -50,7 +56,7 @@ typedef struct player{
     //Características inerentes a ele
     int Atravessavel;
     Amigos ListaAmigos;
-    int Nível;
+    int Nivel;
 
 } Player; //Informações provavelmente serão carregadas por meio de um arquivo texto durante o login.
 
@@ -78,6 +84,26 @@ int PersonalizaPlayer(Player* Jogador){
         //Opcional;
         getchar();
 	    fgets(Jogador->Bio, 300, stdin);
+
+        Jogador->ListaAmigos.primeiro = NULL;
+        Jogador->Nivel = 0;
+        Jogador->Atravessavel = 0;
+
+        //Implementar linguagens e lista de amigos depois!!
+        //Escrever no arquivo texto exatamente como escrito na struct!
+        fprintf(Arq, "%s, %d, %s, %d, %d",
+        Jogador->Nome, Jogador->Idade, Jogador->Bio,
+        Jogador->Nivel, Jogador->Atravessavel);
+
+        fclose(Arq);
+        //Sucesso;
+        return 1;
+    }
+    else {
+        //Adiciona funcionalidades na tela de personalização implementadas com as informações.
+        //Copia tudo para o arquivo já existente, sobre-escrevendo o antigo.
+    }
+
 
         
 
