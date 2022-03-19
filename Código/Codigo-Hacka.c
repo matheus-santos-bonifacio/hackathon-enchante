@@ -4,11 +4,11 @@
 #include <string.h>
 #include <ctype.h>
 #include <raylib.h>
+//#include "libwebsockets.h"
 
 #define SCREEN_WIDTH 1000
 #define SCREEN_HEIGHT 800
 #define MAX_INPUT_CHARS 140
-
 typedef struct linguas{
 
     //Aqui o jogador pode definir se ele prefere que o jogo apareça em FR ou em PT.    
@@ -77,7 +77,7 @@ typedef struct local{
     //---> Interações de 0-4, sendo respectivamente: nenhuma, sentar, pegar, conversar, interagir (obj. inanimado);
     //OBS: 0 - Atravessa; 1- Atravessa, mas visor da tela é diferente; 2- Não atravessa; 3 - Não atravessa; 4 - Não atravessa;
     int isDoor;
-    //--->Se for uma "porta" em um dos quatro cantos da tela para outra sala, há uma interação especial.
+    //--->Se for uma "porta", é para ocorrer uma função específica para a troca de cenário.
 
 } Cenario;
 
@@ -376,14 +376,88 @@ Amigos* RemoveLista(Amigos* ListaAmigos, ptAmigos Infos){
 }
 
 
-void CarregaArqSala(int SALA, Cenario* Sala[][800]){
+void CarregaArqSala(int CurrentScreen, Cenario* Sala[][800]){
 
     FILE* arq;
     
     //Fazer um swtich case para os tipos de sala que vão puxar um determinado arquivo no mapa.
-    switch (SALA){
+    switch (CurrentScreen){
         case 0:   
-        if (!(arq = fopen("Inicio.txt", "r")))
+        if (!(arq = fopen("Fachada.txt", "r")))
+            printf("Erro ao carregar as salas!\n");
+        else
+        {
+            while(!feof(arq))
+            {
+                for(int i = 0; i < SCREEN_WIDTH; i++)
+                {
+                    for(int j = 0; j < SCREEN_HEIGHT; j++)
+                    {
+                        fscanf(arq, "%c", &Sala[i][j]->Simbolo);
+                    }
+                }
+            }
+        fclose(arq);
+        }
+        break;
+
+        case 1:
+        if (!(arq = fopen("Principal.txt", "r")))
+            printf("Erro ao carregar as salas!\n");
+        else
+        {
+            while(!feof(arq))
+            {
+                for(int i = 0; i < SCREEN_WIDTH; i++)
+                {
+                    for(int j = 0; j < SCREEN_HEIGHT; j++)
+                    {
+                        fscanf(arq, "%c", &Sala[i][j]->Simbolo);
+                    }
+                }
+            }
+        fclose(arq);
+        }
+        break;
+
+        case 2:
+        if (!(arq = fopen("Biblioteca.txt", "r")))
+            printf("Erro ao carregar as salas!\n");
+        else
+        {
+            while(!feof(arq))
+            {
+                for(int i = 0; i < SCREEN_WIDTH; i++)
+                {
+                    for(int j = 0; j < SCREEN_HEIGHT; j++)
+                    {
+                        fscanf(arq, "%c", &Sala[i][j]->Simbolo);
+                    }
+                }
+            }
+        fclose(arq);
+        }
+        break;
+
+        if (!(arq = fopen("Palco.txt", "r")))
+            printf("Erro ao carregar as salas!\n");
+        else
+        {
+            while(!feof(arq))
+            {
+                for(int i = 0; i < SCREEN_WIDTH; i++)
+                {
+                    for(int j = 0; j < SCREEN_HEIGHT; j++)
+                    {
+                        fscanf(arq, "%c", &Sala[i][j]->Simbolo);
+                    }
+                }
+            }
+        fclose(arq);
+        }
+        break;
+
+        if (!(arq = fopen("Cinema.txt", "r")))
             printf("Erro ao carregar as salas!\n");
         else
         {
@@ -531,9 +605,6 @@ const char* SpeechBubble(){
     bool envia;
     
     int key = GetCharPressed();
-    
-    Rectangle SBubble = { SCREEN_WIDTH/2.0f - 100, 180, 225, 50 }; 
-    //--> Calcular valores corretos com base na distribuição da tela, isso é só demo;
 
     while (key > 0 && envia == false){
 
@@ -558,11 +629,36 @@ const char* SpeechBubble(){
             }
 }
 
+void DrawSpeechBubble(char Texto[], Player* Jogador){
+
+    Rectangle SBubble = { SCREEN_WIDTH/2.0f - 100, 180, 225, 50 };
+    //Calcular os valores corretos com base na identidade visual da tela;
+
+    BeginDrawing();
+
+    //Fazer identidade visual;
+
+    EndDrawing();
+
+}
+
+int Door(Player* Jogador, int CurrentScreen, int Prox_Mov_X, int Prox_Mov_Y, char Sala[][800]){
+
+    return 0;
+
+}
 
 
+
+//Função Main
 
 int main (){
 
+    int TodasasSalas[5] = {0,1,2,3,4};
+    //Inclui Fachada, Principal, Estudos (onde ficam as Redes Sociais + Biblioteca), Palco e Cinema.
+
+    int CurrentScreen = 0;
+    //É o que definirá qual tela deverá aparecer.
     Player Jogador;
     Cenario Sala[1000][800]; //-->Por ora, tem que analisar a divisão correta da tela 
     //                          (aka se vai ter uma sessão da tela só para chat e etc.);
