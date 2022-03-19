@@ -5,8 +5,8 @@ C H E C K L I S T - Código Hackathon Enchante{é}
 //BÁSICOS
 -Menu de login.
 -Struct para definir o jogador. --> OK
-        -Fazer LDE para Lista de Amigos. Função para isso apenas.
-        -Fazer função para definir as línguas.
+        -Fazer LDE para Lista de Amigos. Função para isso apenas. ---> OK.
+        -Fazer função para definir as línguas. -----> OK.
         -Detectar se é a primeira vez que o jogador faz login. Se for, entrar no menu de criar personagem.
         -Talvez fazer arquivo para salvar infos?
 -Inserir lógica de servidor no jogo.
@@ -14,7 +14,7 @@ C H E C K L I S T - Código Hackathon Enchante{é}
 -Inserir redes sociais.
 -Sistema de pontos/níveis?
 
-//SALAS!
+//SALAS! ---> OK.
 -Seção de chat/fóruns.
 -Filmes fracófonos.
 -Quizzes dentro de um filme francófono.
