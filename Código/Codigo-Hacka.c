@@ -151,7 +151,7 @@ int PersonalizaPlayer(Player* Jogador){
         getchar();
 	    fgets(Jogador->Bio, 300, stdin);
 
-        Jogador->ListaAmigos.primeiro = NULL;
+        Jogador->ListaAmigos.primeiro = InicializaLAmigos();
         Jogador->Nivel = 0;
         Jogador->Atravessavel = 0;
         Jogador->PosicaoPlayer.PosX = SCREEN_WIDTH/2;
@@ -285,7 +285,7 @@ Amigos* InicializaLAmigos(void){
     return NULL;
 }
 
-Amigos* InsereLAmigos(Amigos* ListaAmigos, ptAmigos Infos, Player NOT_Jogador){
+Amigos* AcionarAmigos(Amigos* ListaAmigos, ptAmigos Infos, Player NOT_Jogador){
 
     ptAmigos Novo;
     ptAmigos ptAux = ListaAmigos;
@@ -323,6 +323,8 @@ Amigos* InsereLAmigos(Amigos* ListaAmigos, ptAmigos Infos, Player NOT_Jogador){
     return ListaAmigos;
 
 }
+
+
 
 void CarregaArqSala(int SALA, Cenario* Sala[][800]){
 
