@@ -77,7 +77,9 @@ typedef struct local{
     //---> Interações de 0-4, sendo respectivamente: nenhuma, sentar, pegar, conversar, interagir (obj. inanimado);
     //OBS: 0 - Atravessa; 1- Atravessa, mas visor da tela é diferente; 2- Não atravessa; 3 - Não atravessa; 4 - Não atravessa;
     int isDoor;
+    int DoorTrue_ProxSala;
     //--->Se for uma "porta", é para ocorrer uma função específica para a troca de cenário.
+    //--->O valor DoorTrue_ProxSala será -1 (não é porta) ou 0-4 com o valor da próxima CurrentScreen;
 
 } Cenario;
 
@@ -485,7 +487,7 @@ void CarregaArqSala(int CurrentScreen, Cenario* Sala[][800]){
 
 //FUNÇÕES IN-GAME
 
-void JogadorMovimenta(Player Jogador, Cenario* Sala[][800]){
+void JogadorMovimenta(Player Jogador, Cenario* Sala[][800], int CurrentScreen){
 
     int Prox_Mov_X, Prox_Mov_Y;
     bool movimento;
@@ -513,8 +515,9 @@ void JogadorMovimenta(Player Jogador, Cenario* Sala[][800]){
         //Caso 4: O jogador está no canto da tela em uma porta para uma nova Sala.
 
         if (Sala[Prox_Mov_X][Prox_Mov_Y]->isDoor == 1);
-            //Função Door;
+            Door(&Jogador, CurrentScreen, Prox_Mov_X, Prox_Mov_Y, Sala);
     }
+    
     if (IsKeyPressed(KEY_DOWN) || IsKeyPressed(KEY_S)){
 
         Prox_Mov_X = Jogador.PosicaoPlayer.PosX;
@@ -538,7 +541,7 @@ void JogadorMovimenta(Player Jogador, Cenario* Sala[][800]){
         //Caso 4: O jogador está no canto da tela em uma porta para uma nova Sala.
 
         if (Sala[Prox_Mov_X][Prox_Mov_Y]->isDoor == 1);
-            //Função Door;
+            Door(&Jogador, CurrentScreen, Prox_Mov_X, Prox_Mov_Y, Sala);
     }
 
     if (IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_S)){
@@ -564,7 +567,7 @@ void JogadorMovimenta(Player Jogador, Cenario* Sala[][800]){
         //Caso 4: O jogador está no canto da tela em uma porta para uma nova Sala.
 
         if (Sala[Prox_Mov_X][Prox_Mov_Y]->isDoor == 1);
-            //Função Door;
+            Door(&Jogador, CurrentScreen, Prox_Mov_X, Prox_Mov_Y, Sala);
     }
 
     if (IsKeyPressed(KEY_LEFT) || IsKeyPressed(KEY_A)){
@@ -590,7 +593,7 @@ void JogadorMovimenta(Player Jogador, Cenario* Sala[][800]){
         //Caso 4: O jogador está no canto da tela em uma porta para uma nova Sala.
 
         if (Sala[Prox_Mov_X][Prox_Mov_Y]->isDoor == 1);
-            //Função Door;
+            Door(&Jogador, CurrentScreen, Prox_Mov_X, Prox_Mov_Y, Sala);
     }
 
     //Implementar a versão com sprites quando ficarem prontas!
@@ -642,9 +645,16 @@ void DrawSpeechBubble(char Texto[], Player* Jogador){
 
 }
 
-int Door(Player* Jogador, int CurrentScreen, int Prox_Mov_X, int Prox_Mov_Y, char Sala[][800]){
+void Door(Player* Jogador, int CurrentScreen, int Prox_Mov_X, int Prox_Mov_Y, Cenario Sala[][800]){
 
-    return 0;
+    CurrentScreen = Sala[Prox_Mov_X][Prox_Mov_Y].DoorTrue_ProxSala;
+
+    CarregaArqSala(CurrentScreen, &Sala);
+
+    //LoadNovaTela;
+
+    Jogador->PosicaoPlayer.PosX = Sala[Prox_Mov_X][Prox_Mov_Y].PosicaoCenario.PosX;
+    Jogador->PosicaoPlayer.PosY = Sala[Prox_Mov_X][Prox_Mov_Y].PosicaoCenario.PosY;
 
 }
 
