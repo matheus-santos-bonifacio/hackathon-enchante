@@ -69,6 +69,7 @@ typedef struct local{
     
     Logo, essas infos serão preenchidas pela função de análise da sala baseado nas no arquivo.txt*/
     Posicao PosicaoCenario;
+    char Simbolo;
     int Atravessavel;
     int TipoInteracao;
     //---> Interações de 0-4, sendo respectivamente: nenhuma, sentar, pegar, conversar, interagir (obj. inanimado);
@@ -276,10 +277,36 @@ int LoginUser(FILE* Arq_Lg, FILE* Arq_Pw){
     
 }
 
-void CarregaSALA(){
+void CarregaArqSala(int SALA, Cenario* Sala[][800]){
 
     FILE* arq;
+    
+    //Fazer um swtich case para os tipos de sala que vão puxar um determinado arquivo no mapa.
+    switch (SALA){
+        case 0:   
+        if (!(arq = fopen("Inicio.txt", "r")))
+            printf("Erro ao carregar as salas!\n");
+        else
+        {
+            while(!feof(arq))
+            {
+                for(int i = 0; i < SCREEN_WIDTH; i++)
+                {
+                    for(int j = 0; j < SCREEN_HEIGHT; j++)
+                    {
+                        fscanf(arq, "%c", &Sala[i][j]->Simbolo);
+                    }
+                }
+            }
+        fclose(arq);
+        }
+        break;
 
+        default:
+        printf("Não foi possível carregar o jogo!\n");
+        }
+    
+    //Fazer função de impressão visual da Sala.
 
 }
 
@@ -398,8 +425,6 @@ void JogadorMovimenta(Player Jogador, Cenario* Sala[][800]){
     //Implementar a versão com sprites quando ficarem prontas!
 
 }
-
-//SALAS
 
 int main (){
 
