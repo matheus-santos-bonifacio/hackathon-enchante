@@ -4,7 +4,6 @@
 #include <string.h>
 #include <raylib.h>
 
-
 typedef struct linguas{
 
     //Aqui o jogador pode definir se ele prefere que o jogo apareça em FR ou em PT.    
@@ -12,21 +11,8 @@ typedef struct linguas{
 
     //Aqui o jogador pode definir se ele é proficiente em outras línguas, de bás-int-avç definindo um valor de 0-2.
     int ProficienciaPT;
-        int visivelPT;
-    int ProficienciaFR;
-        int visivelFR;
+    int ProficienciaFR;        
     int ProficienciaEN;
-        int visivelEN;
-    int ProficienciaSP;
-        int visivelSP;
-
-    //Opção de personalização, caso o jogador decida adicionar mais línguas a seu perfil.
-    char Outros1[10];
-    int ProficienciaO1;
-        int visivelO1;
-    char Outros2[10];
-    int ProficienciaO2;
-        int visivelO2;
 
 } Linguas;
 
@@ -59,10 +45,57 @@ typedef struct player{
     int Atravessavel;
     Amigos ListaAmigos;
     int Nivel;
+    int AlunoAF;
 
 } Player; //Informações provavelmente serão carregadas por meio de um arquivo texto durante o login.
 
 //FUNÇÕES
+
+void CadastroLinguas(Player* Jogador){
+
+    int proficiente;
+
+    printf("Qual a sua proficiência em...\n");
+
+    //Fazer lógica de select para ficar mais otimizado.
+
+    printf("\tPT-BR?\n");
+    printf("|------------------------|");
+    printf("|0 - Básico              |\n");
+    printf("|------------------------|");
+    printf("|1 - Intermediário       |\n");
+    printf("|------------------------|");
+    printf("|2 - Avançado ou Fluente |\n");
+    printf("|------------------------|");
+    
+    scanf("%d", &proficiente);
+    Jogador->Linguagens.ProficienciaPT = proficiente;
+
+    printf("\tFR?\n");
+    printf("|------------------------|");
+    printf("|0 - Básico              |\n");
+    printf("|------------------------|");
+    printf("|1 - Intermediário       |\n");
+    printf("|------------------------|");
+    printf("|2 - Avançado ou Fluente |\n");
+    printf("|------------------------|");
+    
+    scanf("%d", &proficiente);
+    Jogador->Linguagens.ProficienciaFR = proficiente;
+
+    printf("\tEN?\n");
+    printf("|------------------------|");
+    printf("|0 - Básico              |\n");
+    printf("|------------------------|");
+    printf("|1 - Intermediário       |\n");
+    printf("|------------------------|");
+    printf("|2 - Avançado ou Fluente |\n");
+    printf("|------------------------|");
+    
+    scanf("%d", &proficiente);
+    Jogador->Linguagens.ProficienciaEN = proficiente;
+
+}
 
 int PersonalizaPlayer(Player* Jogador){
 
@@ -79,8 +112,8 @@ int PersonalizaPlayer(Player* Jogador){
         printf("Idade\n");
         scanf("%d", &Jogador->Idade);
 
-        printf("Quais línguas você fala?\n");
-        //Função de linguagens;
+        printf("Línguas estrangeiras\n");
+        CadastroLinguas(&Jogador);
 
         printf("Conte um pouco sobre você! Insira uma bio.\n");
         //Opcional;
@@ -91,11 +124,14 @@ int PersonalizaPlayer(Player* Jogador){
         Jogador->Nivel = 0;
         Jogador->Atravessavel = 0;
 
-        //Implementar linguagens e lista de amigos depois!!
+        //Se for aluno da AF, isso deverá ser puxado com base no arquivo.txt do cadastro.
+
+        //Implementar lista de amigos depois!!
         //Escrever no arquivo texto exatamente como escrito na struct!
-        fprintf(Arq, "%s, %d, %s, %d, %d",
-        Jogador->Nome, Jogador->Idade, Jogador->Bio,
-        Jogador->Nivel, Jogador->Atravessavel);
+        fprintf(Arq, "%s, %d, %d, %d, %d, %s, %d, %d",
+        Jogador->Nome, Jogador->Idade, Jogador->Linguagens.ProficienciaPT,
+        Jogador->Linguagens.ProficienciaFR, Jogador->Linguagens.ProficienciaEN,
+        Jogador->Bio,Jogador->Nivel, Jogador->Atravessavel);
 
         fclose(Arq);
         //Sucesso;
@@ -202,14 +238,12 @@ int LoginUser(FILE* Arq_Lg, FILE* Arq_Pw){
 
     if (!strcmp(Insere, Senha))
         Senha_Correta = 1;
-        //Adquirir info do usuário para preencher o Player;
+        //Adquirir info do usuário armazenada em um arquivo.txt para preencher o Player;
     else{
         printf("Senha incorreta!\n");
     }
     
 }
-
-
 
 //SALAS
 
