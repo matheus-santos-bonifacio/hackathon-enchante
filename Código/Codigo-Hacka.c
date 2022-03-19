@@ -6,9 +6,14 @@
 #include <raylib.h>
 //#include "libwebsockets.h"
 
-#define SCREEN_WIDTH 1000
+#define SCREEN_WIDTH 1440
 #define SCREEN_HEIGHT 800
 #define MAX_INPUT_CHARS 140
+#define COLUNAS 18
+#define LINHAS 10
+#define LARGURA_PIXEL 72
+#define ALTURA_PIXEL 44
+
 typedef struct linguas{
 
     //Aqui o jogador pode definir se ele prefere que o jogo apareça em FR ou em PT.    
@@ -400,6 +405,8 @@ void CarregaArqSala(int CurrentScreen, Cenario* Sala[][800]){
                 }
             }
         fclose(arq);
+        //CarregaSala;
+
         }
         break;
 
@@ -480,8 +487,14 @@ void CarregaArqSala(int CurrentScreen, Cenario* Sala[][800]){
         default:
         printf("Não foi possível carregar o jogo!\n");
         }
-    
-    //Fazer função de impressão visual da Sala.
+}
+
+void LoadPrincipal(Cenario Sala[][800]){
+
+
+
+    BeginDrawing();
+    EndDrawing();
 
 }
 
@@ -517,7 +530,7 @@ void JogadorMovimenta(Player Jogador, Cenario* Sala[][800], int CurrentScreen){
         if (Sala[Prox_Mov_X][Prox_Mov_Y]->isDoor == 1);
             Door(&Jogador, CurrentScreen, Prox_Mov_X, Prox_Mov_Y, Sala);
     }
-    
+
     if (IsKeyPressed(KEY_DOWN) || IsKeyPressed(KEY_S)){
 
         Prox_Mov_X = Jogador.PosicaoPlayer.PosX;
