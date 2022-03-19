@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <locale.h>
+#include <string.h>
 #include <raylib.h>
+
 
 typedef struct linguas{
 
@@ -103,15 +105,111 @@ int PersonalizaPlayer(Player* Jogador){
         //Adiciona funcionalidades na tela de personalização implementadas com as informações.
         //Copia tudo para o arquivo já existente, sobre-escrevendo o antigo.
     }
+}
 
+int CadastroUser(){
 
+    FILE* NewInfo_Login;
+    FILE* NewInfo_Senha;
+    
+    char NovoLogin[30];
+    char Senha[72];
+    int u, d, s;
+    int sucesso;
+
+    printf("Defina o login!");
+    getchar();
+    fgets(NovoLogin, 30, stdin);
+
+    printf("Defina a senha!");
+    do {
+        getchar();
+        fgets(Senha, 72, stdin);
         
+        for (int i = 0; i < 72; i++){
+            if ( isupper(Senha[i]) )
+                u++;
+            if ( isdigit(Senha[i]) )
+                d++;
+            if ( issymbol(Senha[i]) )   // Checks if password[i] is a symbol
+                s++;        
+            if ( (u + d + s) >= 3) {
+                printf("Sua senha é forte!\n");
+                break;
+            }
+        }
 
+            if (u == 0 || d == 0 || s == 0)
+                printf("Sua senha é fraca, tente novamente!");
+    }
+    while(u == 0 || d == 0 || s == 0);
 
+    NewInfo_Login = fopen("INFO_Login.txt", "a+");
+    sucesso = fprintf(NewInfo_Login, "%s\n", NovoLogin);
+    if (sucesso < 0){
+        printf("Algo deu errado, falha no cadastro!\n");
+        fclose(NewInfo_Login);
+        return 0;
+    }
+    else {
+        NewInfo_Senha = fopen("INFO_Pw.txt", "a+");
+        sucesso = fprint(NewInfo_Senha, "%s\n", Senha);
+        if (sucesso < 0){
+            printf("Algo deu errado, falha no cadastro!\n");
+            fclose(NewInfo_Senha);
+        }
+        else {
+            printf("Cadastro realizado com sucesso!\n");
+            fclose(NewInfo_Senha);
+            return 1;
+        }
+    }
+}
 
+int LoginUser(FILE* Arq_Lg, FILE* Arq_Pw){
+
+    char Login[30], Correspondente[30];
+    char Senha[72], Insere[72];
+    int n = 0;
+    int Encontrado, Senha_Correta;
+
+    printf("Login\n");
+    getchar();
+    fgets(Login, 30, stdin);
+
+    printf("Senha\n");
+    getchar();
+    fgets(Insere, 72, stdin);
+
+    Arq_Lg = fopen("INFO_Login.txt", "r");
+
+    while(!eof(Arq_Lg) && Encontrado == 0){
+        fscanf(Arq_Lg, "%s", &Correspondente);
+        n++;
+        if (!strcmp(Correspondente, Login)){
+            Encontrado = 1;
+        }
     }
 
+    if (Encontrado = 0)
+        printf("Login incorreto!\n");
+
+    fclose(Arq_Lg);
+
+    Arq_Pw = fopen("INFO_Pw.txt", "r");
+    fseek(Arq_Pw, (n-1), 0);
+    fscanf(Arq_Pw, "%s", Senha);
+
+    if (!strcmp(Insere, Senha))
+        Senha_Correta = 1;
+        //Adquirir info do usuário para preencher o Player;
+    else{
+        printf("Senha incorreta!\n");
+    }
+    
 }
+
+
 
 //SALAS
 
