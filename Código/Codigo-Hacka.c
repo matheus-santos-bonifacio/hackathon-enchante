@@ -396,10 +396,11 @@ void PreencheInfosSala(int CurrentScreen, Cenario* Sala[][800], ObjInteracao Obj
 
         case (0):
 
+        int m, n;
         int aux[4]={0,0,3000,3000};
 
-        for (int m = 0; m < 1440; m++){
-            for (int n = 0; n < 800; n++){
+        for (m = 0; m < 1440; m++){
+            for (n = 0; n < 800; n++){
                 //Parede
                 if ((Sala[m][n]->PosicaoCenario.PosX >= 0 && Sala[m][n]->PosicaoCenario.PosX < 1440)&&
                 Sala[m][n]->PosicaoCenario.PosY >= 0 && Sala[m][n]->PosicaoCenario.PosY < 475){
@@ -474,11 +475,46 @@ void PreencheInfosSala(int CurrentScreen, Cenario* Sala[][800], ObjInteracao Obj
        }
     }
 
+void LoadMenuPrincipal(int CurrentScreen, FILE* Arq_Lg, FILE* Arq_Pw){
+    
+    Image Menu = LoadImage("C:/Users/laums/Documents/GitHub/hackathon-enchante/Identidade Visual/Enchantee_capa.png");
+    Texture Bg = LoadTextureFromImage(Menu);
+    Image Login = LoadImage("C:/Users/laums/Documents/GitHub/hackathon-enchante/Identidade Visual/Login.png");
+    Texture Lg = LoadTextureFromImage(Login);
+    Font Aleo = LoadFont("C:/Users/laums/Documents/GitHub/hackathon-enchante/Identidade Visual/Aleo-Italic.ttf");
+
+     while(!(WindowShouldClose));{
+        
+        switch(CurrentScreen){
+        case -1:
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) || IsGestureDetected(GESTURE_TAP) || IsGestureDetected(GESTURE_DOUBLETAP) )
+            CurrentScreen = -2; //Mudar para parte de login;
+        BeginDrawing();
+        ClearBackground(RAYWHITE);
+        DrawTexture(Bg, 0, 800, WHITE);
+        DrawTextEx(Aleo, "Pressione em qualquer lugar para efetuar login", (Vector2){480,120}, 14,1.5, GRAY);
+        EndDrawing();
+        break;
+
+        case -2:
+        LoginUser(Arq_Lg, Arq_Pw);
+        BeginDrawing();
+        ClearBackground(RAYWHITE);
+        DrawTexture(Lg, 0, 800, WHITE);
+        break;
+
+        default:
+        printf("Erro inesperado!\n");
+
+        }
+    }
+    
+
+}
+
 
 void LoadPrincipal(Cenario Sala[][800]){
-
-
-
+    
     BeginDrawing();
     EndDrawing();
 
@@ -593,22 +629,25 @@ void InterageObjetos(int CurrentScreen, Player* Jogador, Vector2 Mouse, Cenario 
         case 0:
 
         Music Bateria = LoadMusicStream("C:/Users/laums/Documents/GitHub/hackathon-enchante/Identidade Visual/Jazz.mp3");
-        Rectangle R1;
         Texture2D PrintExemplo = LoadTexture("C:/Users/laums/Documents/GitHub/hackathon-enchante/Identidade Visual/printvideo.png");
-        Image PExemplo;
-        PExemplo = LoadImageFromTexture(PrintExemplo);
-
 
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && 
         (Mouse.x >= Objetos[0].aux[0][0]||Mouse.x <= Objetos[0].aux[0][2]) &&
-        (Mouse.y >= Objetos[0].aux[0][1]||Mouse.y <= Objetos[0].aux[0][3]))
+        (Mouse.y >= Objetos[0].aux[0][1]||Mouse.y <= Objetos[0].aux[0][3]) &&
+        !(IsMusicPlaying))
             PlayMusicStream(Bateria);
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && 
+        (Mouse.x >= Objetos[0].aux[0][0]||Mouse.x <= Objetos[0].aux[0][2]) &&
+        (Mouse.y >= Objetos[0].aux[0][1]||Mouse.y <= Objetos[0].aux[0][3]) &&
+        IsMusicPlaying == true)
+            StopMusicStream(Bateria);
 
-
-        //No caso, aqui é só a bateria.
         BeginDrawing();
-        //Tocar uma música + abrir uma janelinha falando um pouquinho a respeito!
+        //DrawRectagnel()
+        //DrawTexture(PrintExemplo, posições certas);
         EndDrawing();
+
+        UnloadTexture(PrintExemplo);
 
     }
 }
@@ -680,6 +719,8 @@ void Door(Player* Jogador, int CurrentScreen, Vector2 Mouse, Cenario Sala[][800]
 
 int main (){
 
+    FILE* Arq_Lg;
+    FILE* Arq_Pw;
     int TodasasSalas[5] = {0,1,2,3,4};
     //Inclui Fachada, Principal, Estudos (onde ficam as Redes Sociais + Biblioteca), Palco e Cinema.
     ObjInteracao Objetos[5];
