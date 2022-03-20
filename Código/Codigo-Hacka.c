@@ -14,6 +14,14 @@
 #define LARGURA_PIXEL 72
 #define ALTURA_PIXEL 44
 
+//Organizar struct de objetos para interação;
+
+typedef struct interacao{
+    int aux[4][5];
+    //-->Assumem-se, NO MÁX, 5 objetos interação/sala, cada um exigindo 4 variáveis auxiliares (minx, miny, maxx, maxy);
+    char Info[30];
+} ObjInteracao; //Será um vetor, por sala;
+
 typedef struct linguas{
 
     //Aqui o jogador pode definir se ele é proficiente em outras línguas, de bás-int-avç definindo um valor de 0-2.
@@ -290,7 +298,7 @@ Amigos* InicializaLAmigos(void){
     return NULL;
 }
 
-Amigos* AcionarAmigos(Amigos* ListaAmigos, ptAmigos Infos, Player NOT_Jogador){
+Amigos* AdicionarAmigos(Amigos* ListaAmigos, ptAmigos Infos, Player NOT_Jogador){
 
     ptAmigos Novo;
     ptAmigos ptAux = ListaAmigos;
@@ -380,13 +388,15 @@ Amigos* RemoveLista(Amigos* ListaAmigos, ptAmigos Infos){
 }
 
 
-void PreencheInfosSala(int CurrentScreen, Cenario* Sala[][800]){
+void PreencheInfosSala(int CurrentScreen, Cenario* Sala[][800], ObjInteracao Objetos[]){
 
     //CADA SALA/TELA DEVERÁ SER ANALISADA INDIVIDUALMENTE!
 
        switch(CurrentScreen){
 
         case (0):
+
+        int aux[4]={0,0,3000,3000};
 
         for (int m = 0; m < 1440; m++){
             for (int n = 0; n < 800; n++){
@@ -414,9 +424,18 @@ void PreencheInfosSala(int CurrentScreen, Cenario* Sala[][800]){
                 //Bateria
                 else if ((Sala[m][n]->PosicaoCenario.PosX >= 0 && Sala[m][n]->PosicaoCenario.PosX <320)&&
                 Sala[m][n]->PosicaoCenario.PosY >= 240 && Sala[m][n]->PosicaoCenario.PosY < 540){
+                    char Nome[20];
                     Sala[m][n]->Atravessavel = 0;
                     Sala[m][n]->isDoor = 0;
                     Sala[m][n]->TipoInteracao = 3;
+                    if (m >= aux[0])
+                        aux[0] = m;
+                    if (m <= aux[2])
+                        aux[2] = m;
+                    if (n >= aux[1])
+                        aux[1] = n;
+                    if (n <= aux[3])
+                        aux[3] = n;
                 }
                 //Nada relevante para a movimentação;
                 else {
@@ -426,6 +445,16 @@ void PreencheInfosSala(int CurrentScreen, Cenario* Sala[][800]){
                 }
                 }
             }
+            //Preenche as variáveis auxiliares para uso posterior;
+            if ((Sala[m][n]->PosicaoCenario.PosX >= 0 && Sala[m][n]->PosicaoCenario.PosX <320)&&
+                Sala[m][n]->PosicaoCenario.PosY >= 240 && Sala[m][n]->PosicaoCenario.PosY < 540){
+                char Nome[30] = "Bateria";
+                strcpy(Objetos[0].Info, Nome);
+                Objetos[0].aux[0][0] = aux[0];
+                Objetos[0].aux[0][1] = aux[1];
+                Objetos[0].aux[0][2] = aux[2];
+                Objetos[0].aux[0][3] = aux[3];
+                }
             break;
 
             case (1):
@@ -461,6 +490,7 @@ void JogadorMovimenta(Player Jogador, Cenario* Sala[][800], int CurrentScreen){
 
     Vector2 Mouse;
     int i, j;
+    int m, n;
 
     Cenario Hipotetico;
 
@@ -481,20 +511,12 @@ void JogadorMovimenta(Player Jogador, Cenario* Sala[][800], int CurrentScreen){
             //CASO 1: Jogador vai para X >= atual e Y >= atual;
             if (Jogador.PosicaoPlayer.PosX >= Sala[i][j]->PosicaoCenario.PosX &&
             Jogador.PosicaoPlayer.PosY >= Sala[i][j]->PosicaoCenario.PosY){
-                for (int m = Jogador.PosicaoPlayer.PosX; m == Sala[i][j]->PosicaoCenario.PosX; m++){
+                for (m = Jogador.PosicaoPlayer.PosX; m == Sala[i][j]->PosicaoCenario.PosX; m++){
                     if (Sala[m][Jogador.PosicaoPlayer.PosY]->Atravessavel == 1){
                         Jogador.PosicaoPlayer.PosX++;
-                        for (int n = Jogador.PosicaoPlayer.PosY; n == Sala[i][j]->PosicaoCenario.PosY; n++){
+                        for (n = Jogador.PosicaoPlayer.PosY; n == Sala[i][j]->PosicaoCenario.PosY; n++){
                             if (Sala[m][n]->Atravessavel == 1)
                             Jogador.PosicaoPlayer.PosY++;
-                            if (Sala[m][n]->TipoInteracao == 1);
-                                //Função Sentar;
-                            if (Sala[m][n]->TipoInteracao == 2);
-                                //Função Pegar;
-                            if (Sala[m][n]->TipoInteracao == 3);
-                                //Função InteragirPersonagem;
-                            if (Sala[m][n]->TipoInteracao == 4);
-                                //Função InteragirObjetosSala;
                         }
                     }
                 }
@@ -502,20 +524,12 @@ void JogadorMovimenta(Player Jogador, Cenario* Sala[][800], int CurrentScreen){
             //CASO 2: Jogador vai para X >= atual e Y < atual;
             else if (Jogador.PosicaoPlayer.PosX >= Sala[i][j]->PosicaoCenario.PosX &&
             Jogador.PosicaoPlayer.PosY < Sala[i][j]->PosicaoCenario.PosY){
-                for (int m = Jogador.PosicaoPlayer.PosX; m == Sala[i][j]->PosicaoCenario.PosX; m++){
+                for (m = Jogador.PosicaoPlayer.PosX; m == Sala[i][j]->PosicaoCenario.PosX; m++){
                     if (Sala[m][Jogador.PosicaoPlayer.PosY]->Atravessavel == 1){
                         Jogador.PosicaoPlayer.PosX++;
-                        for (int n = Jogador.PosicaoPlayer.PosY; n == Sala[i][j]->PosicaoCenario.PosY; n--){
+                        for (n = Jogador.PosicaoPlayer.PosY; n == Sala[i][j]->PosicaoCenario.PosY; n--){
                             if (Sala[m][n]->Atravessavel == 1)
                             Jogador.PosicaoPlayer.PosY--;
-                            if (Sala[m][n]->TipoInteracao == 1);
-                                //Função Sentar;
-                            if (Sala[m][n]->TipoInteracao == 2);
-                                //Função Pegar;
-                            if (Sala[m][n]->TipoInteracao == 3);
-                                //Função InteragirPersonagem;
-                            if (Sala[m][n]->TipoInteracao == 4);
-                                //Função InteragirObjetosSala;
                         }
                     }
                 }
@@ -523,20 +537,12 @@ void JogadorMovimenta(Player Jogador, Cenario* Sala[][800], int CurrentScreen){
             //CASO 3: Jogador vai para X < atual e Y >= atual;
             else if (Jogador.PosicaoPlayer.PosX < Sala[i][j]->PosicaoCenario.PosX &&
             Jogador.PosicaoPlayer.PosY >= Sala[i][j]->PosicaoCenario.PosY){
-                for (int m = Jogador.PosicaoPlayer.PosX; m == Sala[i][j]->PosicaoCenario.PosX; m--){
+                for (m = Jogador.PosicaoPlayer.PosX; m == Sala[i][j]->PosicaoCenario.PosX; m--){
                     if (Sala[m][Jogador.PosicaoPlayer.PosY]->Atravessavel == 1){
                         Jogador.PosicaoPlayer.PosX--;
-                        for (int n = Jogador.PosicaoPlayer.PosY; n == Sala[i][j]->PosicaoCenario.PosY; n++){
+                        for (n = Jogador.PosicaoPlayer.PosY; n == Sala[i][j]->PosicaoCenario.PosY; n++){
                             if (Sala[m][n]->Atravessavel == 1)
                             Jogador.PosicaoPlayer.PosY++;
-                            if (Sala[m][n]->TipoInteracao == 1);
-                                //Função Sentar;
-                            if (Sala[m][n]->TipoInteracao == 2);
-                                //Função Pegar;
-                            if (Sala[m][n]->TipoInteracao == 3);
-                                //Função InteragirPersonagem;
-                            if (Sala[m][n]->TipoInteracao == 4);
-                                //Função InteragirObjetosSala;
                         }
                     }
                 }
@@ -551,14 +557,6 @@ void JogadorMovimenta(Player Jogador, Cenario* Sala[][800], int CurrentScreen){
                         for (int n = Jogador.PosicaoPlayer.PosY; n == Sala[i][j]->PosicaoCenario.PosY; n--){
                             if (Sala[m][n]->Atravessavel == 1)
                             Jogador.PosicaoPlayer.PosY--;
-                            if (Sala[m][n]->TipoInteracao == 1);
-                                //Função Sentar;
-                            if (Sala[m][n]->TipoInteracao == 2);
-                                //Função Pegar;
-                            if (Sala[m][n]->TipoInteracao == 3);
-                                //Função InteragirPersonagem;
-                            if (Sala[m][n]->TipoInteracao == 4);
-                                //Função InteragirObjetosSala;
                         }
                     }
                 }
@@ -567,6 +565,15 @@ void JogadorMovimenta(Player Jogador, Cenario* Sala[][800], int CurrentScreen){
         else {
             Door(&Jogador, CurrentScreen, Mouse, Sala);
         }
+
+        if (Sala[m][n]->TipoInteracao == 1);
+            //Função Sentar;
+        if (Sala[m][n]->TipoInteracao == 2);
+            //Função Pegar;
+        if (Sala[m][n]->TipoInteracao == 3);
+            //Função InteragirPersonagem;
+        if (Sala[m][n]->TipoInteracao == 4);
+            //Função InteragirObjetosSala;
         
     /*As funções de sentar e pegar basicamente alteram o Sprite do personagem enquanto 3 e 4 não, mas
     geram ações ou pequenos pop-ups, depende da sala. Se for NPC, gera interação pronta. Se não, você
@@ -575,6 +582,35 @@ void JogadorMovimenta(Player Jogador, Cenario* Sala[][800], int CurrentScreen){
 
     }
 
+}
+
+void InterageObjetos(int CurrentScreen, Player* Jogador, Vector2 Mouse, Cenario Sala[][800], ObjInteracao Objetos[]){
+
+    //Também uma função que depende individualmente de cada sala;
+
+    switch(CurrentScreen){
+        
+        case 0:
+
+        Music Bateria = LoadMusicStream("C:/Users/laums/Documents/GitHub/hackathon-enchante/Identidade Visual/Jazz.mp3");
+        Rectangle R1;
+        Texture2D PrintExemplo = LoadTexture("C:/Users/laums/Documents/GitHub/hackathon-enchante/Identidade Visual/printvideo.png");
+        Image PExemplo;
+        PExemplo = LoadImageFromTexture(PrintExemplo);
+
+
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && 
+        (Mouse.x >= Objetos[0].aux[0][0]||Mouse.x <= Objetos[0].aux[0][2]) &&
+        (Mouse.y >= Objetos[0].aux[0][1]||Mouse.y <= Objetos[0].aux[0][3]))
+            PlayMusicStream(Bateria);
+
+
+        //No caso, aqui é só a bateria.
+        BeginDrawing();
+        //Tocar uma música + abrir uma janelinha falando um pouquinho a respeito!
+        EndDrawing();
+
+    }
 }
 
 const char* SpeechBubble(){
@@ -640,15 +676,15 @@ void Door(Player* Jogador, int CurrentScreen, Vector2 Mouse, Cenario Sala[][800]
 
 
 
-//Função Main
+//Função principal
 
 int main (){
 
     int TodasasSalas[5] = {0,1,2,3,4};
     //Inclui Fachada, Principal, Estudos (onde ficam as Redes Sociais + Biblioteca), Palco e Cinema.
-
+    ObjInteracao Objetos[5];
     int CurrentScreen = -1;
-    //É o que definirá qual tela deverá aparecer.
+    //É o que definirá qual tela deverá aparecer --> Começa no menu principal;
     Player Jogador;
     Cenario Sala[1440][800];
 
