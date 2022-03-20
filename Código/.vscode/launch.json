@@ -9,13 +9,13 @@
         ""
       ],
       "stopAtEntry": false,
-      "cwd": "c:/Users/laums/Documents/Hackathons/2022 - Enchanteé/Código",
+      "cwd": "C:/Users/laums/Documents/GitHub/hackathon-enchante/Código",
       "environment": [],
-      "program": "c:/Users/laums/Documents/Hackathons/2022 - Enchanteé/Código/build/Debug/outDebug",
+      "program": "C:/Users/laums/Documents/GitHub/hackathon-enchante/Código",
       "internalConsoleOptions": "openOnSessionStart",
       "MIMode": "gdb",
-      "miDebuggerPath": "C:/MinGW/bin/gdb.exe",
-      "externalConsole": false,
+      "miDebuggerPath": "C:/raylib/w64devkit/bin/gdb.exe",
+      "externalConsole": true,
       "setupCommands": [
         {
           "description": "Enable pretty-printing for gdb",

@@ -6,7 +6,7 @@
         "C:/raylib/raylib/src/**",
         "${workspaceFolder}/**"
       ],
-      "compilerPath": "C:/raylib/mingw/bin/gcc.exe",
+      "compilerPath": "C:/raylib/w64devkit/bin/gcc.exe",
       "cStandard": "${default}",
       "cppStandard": "${default}",
       "intelliSenseMode": "windows-gcc-x86",

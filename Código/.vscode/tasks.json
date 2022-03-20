@@ -4,7 +4,7 @@
 		{
 			"type": "cppbuild",
 			"label": "C/C++: gcc.exe arquivo de build ativo",
-			"command": "C:/raylib/mingw/bin/gcc.exe",
+			"command": "C:/raylib/w64devkit/bin/gcc.exe",
 			"args": [
 				"-fdiagnostics-color=always",
 				"-g",
@@ -13,7 +13,7 @@
 				"${fileDirname}\\${fileBasenameNoExtension}.exe"
 			],
 			"options": {
-				"cwd": "C:/raylib/mingw/bin"
+				"cwd": "C:/raylib/w64devkit/bin"
 			},
 			"problemMatcher": [
 				"$gcc"
@@ -22,7 +22,7 @@
 				"kind": "build",
 				"isDefault": true
 			},
-			"detail": "compilador: C:/raylib/mingw/bin/gcc.exe"
+			"detail": "compilador: C:/raylib/w64devkit/bin/gcc.exe"
 		}
 	]
 }

@@ -23,7 +23,7 @@ typedef struct interacao{
 
 typedef struct linguas{
 
-    //Aqui o jogador pode definir se ele é proficiente em outras línguas, de bás-int-avç definindo um valor de 0-2.
+    //Aqui o jogador pode definir se ele é proficiente em outras línguas, de bás-int-avç definindo um valor de 0-2
     int ProficienciaPT;
     int ProficienciaFR;        
     int ProficienciaEN;

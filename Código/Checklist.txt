@@ -22,5 +22,5 @@ C H E C K L I S T - Código Hackathon Enchante{é}
 -Seção de cultura.
 
 //DESIGN
--Parte estética (o que aparece na tela) --> ver com Fabiano.
+-Parte estética (o que aparece na tela);
 -UX Design.
