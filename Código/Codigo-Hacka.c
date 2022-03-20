@@ -341,7 +341,7 @@ void ImprimeLista(Amigos* ListaAmigos){
     ptAmigos PtAux = ListaAmigos;
     
     if (ListaAmigos == NULL)
-        printf("Nenhum amigo ainda! Adicione alguns!\n");
+        printf("Nenhum amigo ainda!\n");
     else{
         do {
             printf("Nome = %s\n, Idade = %d\n",
@@ -351,6 +351,13 @@ void ImprimeLista(Amigos* ListaAmigos){
         } 
         while (PtAux != NULL);
     }
+}
+
+void InitPlayer(Player *Jogador){
+
+    Jogador->PosicaoPlayer.PosX = SCREEN_WIDTH/2;
+    Jogador->PosicaoPlayer.PosY = 0;
+
 }
 
 Amigos* RemoveLista(Amigos* ListaAmigos, ptAmigos Infos){
@@ -475,7 +482,7 @@ void PreencheInfosSala(int CurrentScreen, Cenario* Sala[][800], ObjInteracao Obj
        }
     }
 
-void LoadMenuPrincipal(int CurrentScreen, FILE* Arq_Lg, FILE* Arq_Pw){
+void LoadMenuPrincipal(int CurrentScreen, FILE* Arq_Lg, FILE* Arq_Pw, Player Jogador, Cenario Sala[][800]){
     
     Image Menu = LoadImage("C:/Users/laums/Documents/GitHub/hackathon-enchante/Identidade Visual/Enchantee_capa.png");
     Texture Bg = LoadTextureFromImage(Menu);
@@ -486,37 +493,57 @@ void LoadMenuPrincipal(int CurrentScreen, FILE* Arq_Lg, FILE* Arq_Pw){
      while(!(WindowShouldClose));{
         
         switch(CurrentScreen){
-        case -1:
-        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) || IsGestureDetected(GESTURE_TAP) || IsGestureDetected(GESTURE_DOUBLETAP) )
-            CurrentScreen = -2; //Mudar para parte de login;
-        BeginDrawing();
-        ClearBackground(RAYWHITE);
-        DrawTexture(Bg, 0, 800, WHITE);
-        DrawTextEx(Aleo, "Pressione em qualquer lugar para efetuar login", (Vector2){480,120}, 14,1.5, GRAY);
-        EndDrawing();
-        break;
+            case -1:
+            if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) || IsGestureDetected(GESTURE_TAP) || IsGestureDetected(GESTURE_DOUBLETAP) )
+                CurrentScreen = -2; //Mudar para parte de login;
+            BeginDrawing();
+            ClearBackground(RAYWHITE);
+            DrawTexture(Bg, 0, 800, WHITE);
+            DrawTextEx(Aleo, "Pressione em qualquer lugar para efetuar login", (Vector2){480,120}, 14,1.5, GRAY);
+            EndDrawing();
+            break;
 
-        case -2:
-        LoginUser(Arq_Lg, Arq_Pw);
-        BeginDrawing();
-        ClearBackground(RAYWHITE);
-        DrawTexture(Lg, 0, 800, WHITE);
-        break;
+            case -2:
+            int sucesso;
+            sucesso = LoginUser(Arq_Lg, Arq_Pw);
+            if (sucesso == 1){
+                CurrentScreen = 0;
+                LoadCafePrincipal(Jogador, CurrentScreen, Sala);
 
-        default:
-        printf("Erro inesperado!\n");
+            BeginDrawing();
+            ClearBackground(RAYWHITE);
+            DrawTexture(Lg, 0, 800, WHITE);
+            EndDrawing();
+            break;
 
+            default:
+            printf("Erro inesperado!\n");
+
+            }
         }
     }
-    
 
 }
 
-
-void LoadPrincipal(Cenario Sala[][800]){
+void LoadCafePrincipal(Player Jogador, int CurrentScreen, Cenario Sala[][800]){
     
+    CurrentScreen = 0;
+
+    Image Bg = LoadImage("C:/Users/laums/Documents/GitHub/hackathon-enchante/Identidade Visual/Principal");
+    Texture Fundo = LoadTextureFromImage(Bg);
+    
+    while (!WindowShouldClose){
+
+    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) || IsGestureDetected(GESTURE_TAP) || 
+    IsGestureDetected(GESTURE_DOUBLETAP) )
+        JogadorMovimenta(Jogador, Sala, CurrentScreen);
+
     BeginDrawing();
+
+    DrawTexture(Fundo, 0, 0, WHITE);
+
     EndDrawing();
+    }
 
 }
 
@@ -714,8 +741,7 @@ void Door(Player* Jogador, int CurrentScreen, Vector2 Mouse, Cenario Sala[][800]
 }
 
 
-
-//Função principal
+//Função principal --> Une todas as funções elaboradas e implementadas anteriormente.
 
 int main (){
 
@@ -731,8 +757,10 @@ int main (){
 
     setlocale(LC_ALL, "Portuguese");
 
+    InitPlayer(&Jogador);
+
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Hackathon Enchante{é} - Demo do Time 3");
-    LoadMenuPrincipal(CurrentScreen, Arq_Lg, Arq_Pw);
+    LoadMenuPrincipal(CurrentScreen, Arq_Lg, Arq_Pw, Jogador, Sala);
     SetTargetFPS(60);
     
     
