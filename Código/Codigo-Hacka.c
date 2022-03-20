@@ -732,6 +732,9 @@ int main (){
     setlocale(LC_ALL, "Portuguese");
 
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Hackathon Enchante{é} - Demo do Time 3");
+    LoadMenuPrincipal(CurrentScreen, Arq_Lg, Arq_Pw);
+    SetTargetFPS(60);
+    
     
     //ACIMA: Toda a lógica do jogo e arquivos.
     //ABAIXO: Tudo o que aparecerá na tela/UX Design estruturado para a biblioteca. 
