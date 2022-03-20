@@ -15,7 +15,7 @@
 #define ALTURA_PIXEL 44
 
 typedef struct linguas{
-    
+
     //Aqui o jogador pode definir se ele é proficiente em outras línguas, de bás-int-avç definindo um valor de 0-2.
     int ProficienciaPT;
     int ProficienciaFR;        
@@ -73,11 +73,11 @@ typedef struct local{
     
     Logo, essas infos serão preenchidas pela função de análise da sala baseado nas no arquivo.txt*/
     Posicao PosicaoCenario;
-    char Simbolo;
     int Atravessavel;
     int TipoInteracao;
     //---> Interações de 0-4, sendo respectivamente: nenhuma, sentar, pegar, conversar, interagir (obj. inanimado);
-    //OBS: 0 - Atravessa; 1- Atravessa, mas visor da tela é diferente; 2- Não atravessa; 3 - Não atravessa; 4 - Não atravessa;
+    //OBS: Resumo lógico: 0 - Atravessa; 1- Atravessa, mas visor da tela é diferente; 2- Não atravessa; 3 - Não atravessa; 
+    //     4 - Não atravessa;
     int isDoor;
     int DoorTrue_ProxSala;
     //--->Se for uma "porta", é para ocorrer uma função específica para a troca de cenário.
@@ -380,111 +380,71 @@ Amigos* RemoveLista(Amigos* ListaAmigos, ptAmigos Infos){
 }
 
 
-void CarregaArqSala(int CurrentScreen, Cenario* Sala[][800]){
+void PreencheInfosSala(int CurrentScreen, Cenario* Sala[][800]){
 
-    FILE* arq;
-    
-    //Fazer um swtich case para os tipos de sala que vão puxar um determinado arquivo no mapa.
-    switch (CurrentScreen){
-        case 0:   
-        if (!(arq = fopen("Fachada.txt", "r")))
-            printf("Erro ao carregar as salas!\n");
-        else
-        {
-            while(!feof(arq))
-            {
-                for(int i = 0; i < SCREEN_WIDTH; i++)
-                {
-                    for(int j = 0; j < SCREEN_HEIGHT; j++)
-                    {
-                        fscanf(arq, "%c", &Sala[i][j]->Simbolo);
-                    }
+    //CADA SALA/TELA DEVERÁ SER ANALISADA INDIVIDUALMENTE!
+
+       switch(CurrentScreen){
+
+        case (0):
+
+        for (int m = 0; m < 1440; m++){
+            for (int n = 0; n < 800; n++){
+                //Parede
+                if ((Sala[m][n]->PosicaoCenario.PosX >= 0 && Sala[m][n]->PosicaoCenario.PosX < 1440)&&
+                Sala[m][n]->PosicaoCenario.PosY >= 0 && Sala[m][n]->PosicaoCenario.PosY < 475){
+                    Sala[m][n]->Atravessavel = 0;
+                    Sala[m][n]->isDoor = 0;
+                    Sala[m][n]->TipoInteracao = 0;
+                }
+                //Cadeira #1
+                else if ((Sala[m][n]->PosicaoCenario.PosX >= 625 && Sala[m][n]->PosicaoCenario.PosX <740)&&
+                Sala[m][n]->PosicaoCenario.PosY >= 380 && Sala[m][n]->PosicaoCenario.PosY < 440){
+                    Sala[m][n]->Atravessavel = 1;
+                    Sala[m][n]->isDoor = 0;
+                    Sala[m][n]->TipoInteracao = 1;
+                }
+                //Cadeira #2
+                else if ((Sala[m][n]->PosicaoCenario.PosX >= 905 && Sala[m][n]->PosicaoCenario.PosX < 1015)&&
+                Sala[m][n]->PosicaoCenario.PosY >= 370 && Sala[m][n]->PosicaoCenario.PosY < 425){
+                    Sala[m][n]->Atravessavel = 1;
+                    Sala[m][n]->isDoor = 0;
+                    Sala[m][n]->TipoInteracao = 1;
+                }
+                //Bateria
+                else if ((Sala[m][n]->PosicaoCenario.PosX >= 0 && Sala[m][n]->PosicaoCenario.PosX <320)&&
+                Sala[m][n]->PosicaoCenario.PosY >= 240 && Sala[m][n]->PosicaoCenario.PosY < 540){
+                    Sala[m][n]->Atravessavel = 0;
+                    Sala[m][n]->isDoor = 0;
+                    Sala[m][n]->TipoInteracao = 3;
+                }
+                //Nada relevante para a movimentação;
+                else {
+                    Sala[m][n]->Atravessavel = 1;
+                    Sala[m][n]->isDoor = 0;
+                    Sala[m][n]->TipoInteracao = 0;
+                }
                 }
             }
-        fclose(arq);
-        //CarregaSala;
+            break;
 
-        }
-        break;
+            case (1):
+            break;
 
-        case 1:
-        if (!(arq = fopen("Principal.txt", "r")))
-            printf("Erro ao carregar as salas!\n");
-        else
-        {
-            while(!feof(arq))
-            {
-                for(int i = 0; i < SCREEN_WIDTH; i++)
-                {
-                    for(int j = 0; j < SCREEN_HEIGHT; j++)
-                    {
-                        fscanf(arq, "%c", &Sala[i][j]->Simbolo);
-                    }
-                }
-            }
-        fclose(arq);
-        }
-        break;
+            case(2):
+            break;
 
-        case 2:
-        if (!(arq = fopen("Biblioteca.txt", "r")))
-            printf("Erro ao carregar as salas!\n");
-        else
-        {
-            while(!feof(arq))
-            {
-                for(int i = 0; i < SCREEN_WIDTH; i++)
-                {
-                    for(int j = 0; j < SCREEN_HEIGHT; j++)
-                    {
-                        fscanf(arq, "%c", &Sala[i][j]->Simbolo);
-                    }
-                }
-            }
-        fclose(arq);
-        }
-        break;
+            case(3):
+            break;
 
-        if (!(arq = fopen("Palco.txt", "r")))
-            printf("Erro ao carregar as salas!\n");
-        else
-        {
-            while(!feof(arq))
-            {
-                for(int i = 0; i < SCREEN_WIDTH; i++)
-                {
-                    for(int j = 0; j < SCREEN_HEIGHT; j++)
-                    {
-                        fscanf(arq, "%c", &Sala[i][j]->Simbolo);
-                    }
-                }
-            }
-        fclose(arq);
-        }
-        break;
+            case(4):
+            break;
 
-        if (!(arq = fopen("Cinema.txt", "r")))
-            printf("Erro ao carregar as salas!\n");
-        else
-        {
-            while(!feof(arq))
-            {
-                for(int i = 0; i < SCREEN_WIDTH; i++)
-                {
-                    for(int j = 0; j < SCREEN_HEIGHT; j++)
-                    {
-                        fscanf(arq, "%c", &Sala[i][j]->Simbolo);
-                    }
-                }
-            }
-        fclose(arq);
-        }
-        break;
+            default:
+            printf("Erro na análise do cenário!\n");
+       }
+    }
 
-        default:
-        printf("Não foi possível carregar o jogo!\n");
-        }
-}
 
 void LoadPrincipal(Cenario Sala[][800]){
 
@@ -527,6 +487,14 @@ void JogadorMovimenta(Player Jogador, Cenario* Sala[][800], int CurrentScreen){
                         for (int n = Jogador.PosicaoPlayer.PosY; n == Sala[i][j]->PosicaoCenario.PosY; n++){
                             if (Sala[m][n]->Atravessavel == 1)
                             Jogador.PosicaoPlayer.PosY++;
+                            if (Sala[m][n]->TipoInteracao == 1);
+                                //Função Sentar;
+                            if (Sala[m][n]->TipoInteracao == 2);
+                                //Função Pegar;
+                            if (Sala[m][n]->TipoInteracao == 3);
+                                //Função InteragirPersonagem;
+                            if (Sala[m][n]->TipoInteracao == 4);
+                                //Função InteragirObjetosSala;
                         }
                     }
                 }
@@ -540,6 +508,14 @@ void JogadorMovimenta(Player Jogador, Cenario* Sala[][800], int CurrentScreen){
                         for (int n = Jogador.PosicaoPlayer.PosY; n == Sala[i][j]->PosicaoCenario.PosY; n--){
                             if (Sala[m][n]->Atravessavel == 1)
                             Jogador.PosicaoPlayer.PosY--;
+                            if (Sala[m][n]->TipoInteracao == 1);
+                                //Função Sentar;
+                            if (Sala[m][n]->TipoInteracao == 2);
+                                //Função Pegar;
+                            if (Sala[m][n]->TipoInteracao == 3);
+                                //Função InteragirPersonagem;
+                            if (Sala[m][n]->TipoInteracao == 4);
+                                //Função InteragirObjetosSala;
                         }
                     }
                 }
@@ -553,6 +529,14 @@ void JogadorMovimenta(Player Jogador, Cenario* Sala[][800], int CurrentScreen){
                         for (int n = Jogador.PosicaoPlayer.PosY; n == Sala[i][j]->PosicaoCenario.PosY; n++){
                             if (Sala[m][n]->Atravessavel == 1)
                             Jogador.PosicaoPlayer.PosY++;
+                            if (Sala[m][n]->TipoInteracao == 1);
+                                //Função Sentar;
+                            if (Sala[m][n]->TipoInteracao == 2);
+                                //Função Pegar;
+                            if (Sala[m][n]->TipoInteracao == 3);
+                                //Função InteragirPersonagem;
+                            if (Sala[m][n]->TipoInteracao == 4);
+                                //Função InteragirObjetosSala;
                         }
                     }
                 }
@@ -567,6 +551,14 @@ void JogadorMovimenta(Player Jogador, Cenario* Sala[][800], int CurrentScreen){
                         for (int n = Jogador.PosicaoPlayer.PosY; n == Sala[i][j]->PosicaoCenario.PosY; n--){
                             if (Sala[m][n]->Atravessavel == 1)
                             Jogador.PosicaoPlayer.PosY--;
+                            if (Sala[m][n]->TipoInteracao == 1);
+                                //Função Sentar;
+                            if (Sala[m][n]->TipoInteracao == 2);
+                                //Função Pegar;
+                            if (Sala[m][n]->TipoInteracao == 3);
+                                //Função InteragirPersonagem;
+                            if (Sala[m][n]->TipoInteracao == 4);
+                                //Função InteragirObjetosSala;
                         }
                     }
                 }
@@ -576,7 +568,10 @@ void JogadorMovimenta(Player Jogador, Cenario* Sala[][800], int CurrentScreen){
             Door(&Jogador, CurrentScreen, Mouse, Sala);
         }
         
-    //IMPLEMENTAR A SPRITE DO PERSONAGEM!
+    /*As funções de sentar e pegar basicamente alteram o Sprite do personagem enquanto 3 e 4 não, mas
+    geram ações ou pequenos pop-ups, depende da sala. Se for NPC, gera interação pronta. Se não, você
+    abre um mini-perfil daquele usuário e tem a opção de mandar uma mensagem (uma aba separada), adicionar 
+    como amigo ou bloqueá-lo.*/
 
     }
 
@@ -652,11 +647,10 @@ int main (){
     int TodasasSalas[5] = {0,1,2,3,4};
     //Inclui Fachada, Principal, Estudos (onde ficam as Redes Sociais + Biblioteca), Palco e Cinema.
 
-    int CurrentScreen = 0;
+    int CurrentScreen = -1;
     //É o que definirá qual tela deverá aparecer.
     Player Jogador;
-    Cenario Sala[1000][800]; //-->Por ora, tem que analisar a divisão correta da tela 
-    //                          (aka se vai ter uma sessão da tela só para chat e etc.);
+    Cenario Sala[1440][800];
 
     setlocale(LC_ALL, "Portuguese");
 
