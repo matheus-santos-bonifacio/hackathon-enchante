@@ -1,9 +1,13 @@
 {
   "configurations": [
     {
-      "name": "windows-gcc-x86",
+      "name": "raylib-gcc-x86",
       "includePath": [
-        "${workspaceFolder}/**"
+        "${workspaceFolder}/**",
+        "C:/raylib/mingw/bin/",
+        "C:/raylib/mingw/include",
+        "C:/MinGW/bin",
+        "C:/MinGW/include"
       ],
       "compilerPath": "C:/raylib/mingw/bin/gcc.exe",
       "cStandard": "${default}",
