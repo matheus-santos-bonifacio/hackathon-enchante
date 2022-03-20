@@ -15,7 +15,6 @@
 #define ALTURA_PIXEL 44
 
 //Organizar struct de objetos para interação;
-
 typedef struct interacao{
     int aux[4][5];
     //-->Assumem-se, NO MÁX, 5 objetos interação/sala, cada um exigindo 4 variáveis auxiliares (minx, miny, maxx, maxy);
