@@ -27,7 +27,7 @@ static struct my_conn {
 
 static struct lws_context *context;
 static int interrupted, port = 443, ssl_connection = LCCSCF_USE_SSL;
-static const char *server_address = "localhost",
+static const char *server_address = "libwebsockets.org",
 		  *pro = "dumb-increment-protocol";
 
 /*
