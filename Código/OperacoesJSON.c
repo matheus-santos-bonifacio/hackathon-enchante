@@ -57,15 +57,3 @@ Player mostra_usuarios(const char * const jogadores_json)
     return jogador;
 }
 
-int main()
-{
-    Player jogador = { "Test", 14, {}, "test", {}, 15, {}, 15, 14 };
-    char dados_json[] = "[]";
-    char *jogador_json = insere_usuario(jogador, dados_json);
-    printf("%s", mostra_usuarios(jogador_json).Nome);
-
-    free(jogador_json);
-
-    return 0;
-}
-
