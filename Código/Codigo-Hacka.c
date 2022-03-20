@@ -358,6 +358,7 @@ void InitPlayer(Player *Jogador){
 
     Jogador->PosicaoPlayer.PosX = SCREEN_WIDTH/2;
     Jogador->PosicaoPlayer.PosY = 0;
+    drawPlayer(Jogador, 1);
 
 }
 
@@ -435,6 +436,9 @@ void drawPlayer(Player *Jogador, int caso){
 
         }
         break;
+
+        default:
+        printf("Erro na elaboração da Sprite!");
     }
     
 }
@@ -479,8 +483,14 @@ void PreencheInfosSala(int CurrentScreen, Cenario* Sala[][800], ObjInteracao Obj
     //CADA SALA/TELA DEVERÁ SER ANALISADA INDIVIDUALMENTE!
 
        switch(CurrentScreen){
+        
+        /*Fachada
+        case 0:
 
-        case (0):
+        */
+
+        //Café Principal
+        case 1:
 
         int m, n;
         int aux[4]={0,0,3000,3000};
@@ -586,7 +596,7 @@ void LoadMenuPrincipal(int CurrentScreen, FILE* Arq_Lg, FILE* Arq_Pw, Player Jog
             int sucesso;
             sucesso = LoginUser(Arq_Lg, Arq_Pw);
             if (sucesso == 1){
-                CurrentScreen = 0;
+                CurrentScreen = 1;
                 LoadCafePrincipal(Jogador, CurrentScreen, Sala);
 
             BeginDrawing();
@@ -606,7 +616,7 @@ void LoadMenuPrincipal(int CurrentScreen, FILE* Arq_Lg, FILE* Arq_Pw, Player Jog
 
 void LoadCafePrincipal(Player Jogador, int CurrentScreen, Cenario Sala[][800]){
     
-    CurrentScreen = 0;
+    CurrentScreen = 1;
 
     Image Bg = LoadImage("C:/Users/laums/Documents/GitHub/hackathon-enchante/Identidade Visual/Principal");
     Texture Fundo = LoadTextureFromImage(Bg);
@@ -761,6 +771,27 @@ void InterageObjetos(int CurrentScreen, Player* Jogador, Vector2 Mouse, Cenario 
         UnloadTexture(PrintExemplo);
 
     }
+}
+
+void Fachada(Cenario Sala[][800], Player* Jogador){
+
+    //---->Fica rascunhada apenas, pois faltou terminar o preenchimento da função PreencheIndosSala;
+
+    int caso = 1;
+    CurrentScreen = 0;
+
+    Image Bg("C:/Users/laums/Documents/GitHub/hackathon-enchante/Identidade Visual/Fachada Enchantee.png");
+    Texture Fachada = LoadTextureFromImage(Bg);
+
+    PreencheInfosSala(CurrentScreen, Sala, Objetos);
+
+    while(!WindowShouldClose);{
+        BeginDrawing();
+        DrawTexture(Fachada, 0, 800, RAYWHITE);
+        DrawPlayer(Jogador, Cenarios, CurrentScreen);
+        EndDrawing();
+    }
+
 }
 
 const char* SpeechBubble(){
