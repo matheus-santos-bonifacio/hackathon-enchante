@@ -3,7 +3,7 @@
     {
       "name": "raylib-gcc-x86",
       "includePath": [
-        "C:/raylib/raylib/src/**",
+        "C:/raylib/w64devkit/bin/src/**",
         "${workspaceFolder}/**"
       ],
       "compilerPath": "C:/raylib/w64devkit/bin/gcc.exe",

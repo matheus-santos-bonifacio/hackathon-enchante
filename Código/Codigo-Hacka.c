@@ -3,8 +3,9 @@
 #include <locale.h>
 #include <string.h>
 #include <ctype.h>
+//Bibliotecas externas!
 #include <raylib.h>
-//#include "libwebsockets.h"
+#include <libwebsockets.h>
 
 #define SCREEN_WIDTH 1440
 #define SCREEN_HEIGHT 800
@@ -360,6 +361,84 @@ void InitPlayer(Player *Jogador){
 
 }
 
+void drawPlayer(Player *Jogador, int caso){
+
+    Image Jogador = LoadImage("C:/Users/laums/Documents/GitHub/hackathon-enchante/Identidade Visual/Persona 02a");
+    Texture Pl = LoadTextureFromImage(Jogador);
+    Image Jogador_Andando = LoadImage("C:/Users/laums/Documents/GitHub/hackathon-enchante/Identidade Visual/Persona 02b");
+    Texture Pl_wlk = LoadTextureFromImage(Jogador_Andando));
+    Image Jogador_Falando= LoadImage("C:/Users/laums/Documents/GitHub/hackathon-enchante/Identidade Visual/Persona 02c");
+    Texture Pl_tlk = LoadTextureFromImage(Jogador_Falando);
+    Image Jogador_Sentado = LoadImage(Image Jogador_Andando("C:/Users/laums/Documents/GitHub/hackathon-enchante/Identidade Visual/Persona 02d");
+    Texture Pl_st = LoadTextureFromImage(Jogador_Sentado);
+
+    Switch(caso){
+
+        case 1:
+        //Andando
+        while(!(WindowShouldClose));{
+
+            BeginDrawing();
+            DrawTexture(Pl_wlk, (Jogador->PosicaoPlayer.Posx)/COLUNAS, ((Jogador->PosicaoPlayer.Posx)/LINHAS), RAYWHITE);
+            JogadorMovimenta(Jogador, Sala, CurrentScreen);
+            EndDrawing();
+
+        }
+        break;
+
+        case 2:
+        //sentando
+        while(!(WindowShouldClose));{
+
+            BeginDrawing();
+            DrawTexture(Pl_st, (Jogador->PosicaoPlayer.Posx)/COLUNAS, ((Jogador->PosicaoPlayer.Posx)/LINHAS), RAYWHITE);
+            JogadorMovimenta(Jogador, Sala, CurrentScreen);
+            EndDrawing();
+
+        }
+        break;
+
+        case 3:
+        //Pega
+        while(!(WindowShouldClose));{
+
+            BeginDrawing();
+            //Textura temporária. Deveria ser a correta de pegar.
+            DrawTexture(Pl, (Jogador->PosicaoPlayer.Posx)/COLUNAS, ((Jogador->PosicaoPlayer.Posx)/LINHAS), RAYWHITE);
+            JogadorMovimenta(Jogador, Sala, CurrentScreen);
+            EndDrawing();
+
+        }
+        break;
+
+        case 4:
+        //Falando
+        while(!(WindowShouldClose));{
+
+            BeginDrawing();
+            DrawTexture(Pl_tlk, (Jogador->PosicaoPlayer.Posx)/COLUNAS, ((Jogador->PosicaoPlayer.Posx)/LINHAS), RAYWHITE);
+            JogadorMovimenta(Jogador, Sala, CurrentScreen);
+            EndDrawing();
+
+        }
+        break;
+
+        case 5:
+        //Interage objeto.
+        while(!(WindowShouldClose));{
+
+            //Textura temporária. Deveria ser a correta de interagir com objetos inanimados.
+            BeginDrawing();
+            DrawTexture(Pl_talk, (Jogador->PosicaoPlayer.Posx)/COLUNAS, ((Jogador->PosicaoPlayer.Posx)/LINHAS), RAYWHITE);
+            JogadorMovimenta(Jogador, Sala, CurrentScreen);
+            EndDrawing();
+
+        }
+        break;
+    }
+    
+}
+
 Amigos* RemoveLista(Amigos* ListaAmigos, ptAmigos Infos){
 
     ptAmigos PtAux;
@@ -554,6 +633,7 @@ void JogadorMovimenta(Player Jogador, Cenario* Sala[][800], int CurrentScreen){
     Vector2 Mouse;
     int i, j;
     int m, n;
+    int comando; //-->Comando para definir qual será o desenho;
 
     Cenario Hipotetico;
 
@@ -637,6 +717,10 @@ void JogadorMovimenta(Player Jogador, Cenario* Sala[][800], int CurrentScreen){
             //Função InteragirPersonagem;
         if (Sala[m][n]->TipoInteracao == 4);
             //Função InteragirObjetosSala;
+
+        comando = Sala[m][n]->TipoInteracao;
+        drawPlayer(&Jogador, comando);
+        
         
     /*As funções de sentar e pegar basicamente alteram o Sprite do personagem enquanto 3 e 4 não, mas
     geram ações ou pequenos pop-ups, depende da sala. Se for NPC, gera interação pronta. Se não, você
@@ -670,7 +754,7 @@ void InterageObjetos(int CurrentScreen, Player* Jogador, Vector2 Mouse, Cenario 
             StopMusicStream(Bateria);
 
         BeginDrawing();
-        //DrawRectagnel()
+        //Draw Rectangle --> Adicionar balão;
         //DrawTexture(PrintExemplo, posições certas);
         EndDrawing();
 
@@ -714,11 +798,10 @@ const char* SpeechBubble(){
 void DrawSpeechBubble(char Texto[], Player* Jogador){
 
     Rectangle SBubble = { SCREEN_WIDTH/2.0f - 100, 180, 225, 50 };
-    //Calcular os valores corretos com base na identidade visual da tela;
 
     BeginDrawing();
 
-    //Fazer identidade visual;
+    DrawRectangle(SBubble, );
 
     EndDrawing();
 
