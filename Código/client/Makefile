@@ -57,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/caneladeouro/Documents/Shawee-Hackathon/hackathon-enchante-2/client
+CMAKE_SOURCE_DIR = /home/caneladeouro/Documents/Shawee-Hackathon/hackathon-enchante/client
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/caneladeouro/Documents/Shawee-Hackathon/hackathon-enchante-2/client
+CMAKE_BINARY_DIR = /home/caneladeouro/Documents/Shawee-Hackathon/hackathon-enchante/client
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,9 +87,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/caneladeouro/Documents/Shawee-Hackathon/hackathon-enchante-2/client/CMakeFiles /home/caneladeouro/Documents/Shawee-Hackathon/hackathon-enchante-2/client//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/caneladeouro/Documents/Shawee-Hackathon/hackathon-enchante/client/CMakeFiles /home/caneladeouro/Documents/Shawee-Hackathon/hackathon-enchante/client//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/caneladeouro/Documents/Shawee-Hackathon/hackathon-enchante-2/client/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/caneladeouro/Documents/Shawee-Hackathon/hackathon-enchante/client/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -117,24 +117,24 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named lws-minimal-ws-client
+# Target rules for targets named hackathon
 
 # Build rule for target.
-lws-minimal-ws-client: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 lws-minimal-ws-client
-.PHONY : lws-minimal-ws-client
+hackathon: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 hackathon
+.PHONY : hackathon
 
 # fast build rule for target.
-lws-minimal-ws-client/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/lws-minimal-ws-client.dir/build.make CMakeFiles/lws-minimal-ws-client.dir/build
-.PHONY : lws-minimal-ws-client/fast
+hackathon/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/hackathon.dir/build.make CMakeFiles/hackathon.dir/build
+.PHONY : hackathon/fast
 
 hackathon.o: hackathon.c.o
 .PHONY : hackathon.o
 
 # target to build an object file
 hackathon.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/lws-minimal-ws-client.dir/build.make CMakeFiles/lws-minimal-ws-client.dir/hackathon.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/hackathon.dir/build.make CMakeFiles/hackathon.dir/hackathon.c.o
 .PHONY : hackathon.c.o
 
 hackathon.i: hackathon.c.i
@@ -142,7 +142,7 @@ hackathon.i: hackathon.c.i
 
 # target to preprocess a source file
 hackathon.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/lws-minimal-ws-client.dir/build.make CMakeFiles/lws-minimal-ws-client.dir/hackathon.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/hackathon.dir/build.make CMakeFiles/hackathon.dir/hackathon.c.i
 .PHONY : hackathon.c.i
 
 hackathon.s: hackathon.c.s
@@ -150,7 +150,7 @@ hackathon.s: hackathon.c.s
 
 # target to generate assembly for a file
 hackathon.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/lws-minimal-ws-client.dir/build.make CMakeFiles/lws-minimal-ws-client.dir/hackathon.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/hackathon.dir/build.make CMakeFiles/hackathon.dir/hackathon.c.s
 .PHONY : hackathon.c.s
 
 # Help Target
@@ -161,7 +161,7 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... lws-minimal-ws-client"
+	@echo "... hackathon"
 	@echo "... hackathon.o"
 	@echo "... hackathon.i"
 	@echo "... hackathon.s"
